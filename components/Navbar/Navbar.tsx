@@ -32,18 +32,12 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
       </ul>
       {toggleHamburguerIcon && (
         <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
-          <ul className={styles.navbarListMobile}>
+          <ul className={styles.navbarList}>
             <li>
-              <Link href='#'>Pedir</Link>
+              <Link href='/menu'>Menu</Link>
             </li>
             <li>
-              <Link href='#'>Pedidos</Link>
-            </li>
-            <li>
-              <Link href='#'>Menu</Link>
-            </li>
-            <li>
-              <Link href='#'>Logout</Link>
+              <Link href='#'>Ubicación</Link>
             </li>
           </ul>
         </animated.h1>
