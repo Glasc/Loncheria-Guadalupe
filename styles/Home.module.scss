@@ -1,0 +1,344 @@
+@import './variables.scss';
+
+.container {
+  min-height: 100vh;
+  width: min(100%, 1000px);
+  padding: 1.5em;
+  padding-bottom: 0;
+  color: black;
+  background-color: $secondary-color;
+}
+
+
+
+.hamburgerIcon {
+  position: absolute;
+  right: 0;
+}
+
+.hero {
+  padding: 4em 0;
+  padding-top: 5em;
+  display: grid;
+  gap: 3em;
+}
+
+.heroDescription {
+  display: grid;
+  gap: 0.5em;
+  grid-template-rows: auto auto autopx;
+  border-radius: 11px;
+
+  & h1 {
+    font-weight: bold;
+    text-align: center;
+    font-size: 2.8125rem;
+    line-height: 3rem;;
+    color: whitesmoke;
+  }
+  & p {
+    color: $desc-color;
+    margin-top: 0.5em;
+    text-align: center;
+  }
+
+  & .heroButtonWrapper {
+    display: grid;
+    padding: 0.8em 0;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0.75em;
+  }
+}
+
+.heroImageWrapper {
+  border-radius: 11px;
+  display: grid;
+  justify-content: flex-end;
+  align-items: center;
+
+  & .heroImage {
+  }
+}
+
+.footer {
+  margin: 0 -1.5em;
+  background-color: $secondary-color;
+}
+
+.footerCardContainer {
+  padding: 1.5em;
+  gap: 1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+}
+
+.footerCard {
+  border-radius: 11px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 2em;
+  padding: 1em;
+  background-color: $quaternary-color;
+  cursor: pointer;
+
+  & .footerCardImage * {
+    border-radius: 11px;
+  }
+
+  & h3 {
+    color: $primary-color;
+    font-weight: bold;
+    font-size: 1.125rem;
+  } 
+  & h4 {
+    color: whitesmoke;
+  }
+  & p {
+    padding-top: 0.5em;
+    color: $desc-color;
+  }
+  & .footerCardDescription {
+    margin: -1em;
+    padding: 1em;
+  }
+}
+
+@media (max-width: 700px) {
+  .hamburgerIcon {
+    display: block !important;
+    cursor: pointer;
+  }
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+  .navbarListMobile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #362826;
+    & *:hover {
+      background-color: #3f2e2c;
+      cursor: pointer;
+    }
+    & * {
+      padding: 0.5em 0;
+    }
+  }
+}
+
+@media (min-width: 700px) {
+  .navbarList {
+    display: flex;
+  }
+}
+
+@media (min-width: 1000px) {
+  .hero {
+    display: grid;
+    gap: 1em;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .heroDescription {
+    & h1 {
+      text-align: left;
+    }
+
+    & p {
+      text-align: left;
+    }
+  }
+
+  .navbarListMobile {
+    display: none;
+  }
+}
+
+// .container {
+//   padding-top: 2.5em;
+//   width: 70%;
+//   min-height: 100vh;
+//   color: $secondary-color;
+//   display: fleX;
+//   flex-direction: column;
+// }
+
+// .nav {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   .logo {
+//     color: $primary-color;
+//     font-weight: bold;
+//     font-size: 1.9rem;
+//   }
+//   .list {
+//     list-style: none;
+//     display: flex;
+//     column-gap: 4em;
+//     font-size: 1.3rem;
+//     font-weight: 400;
+
+//     & li:first-child {
+//       color: $primary-color;
+//       font-weight: bold;
+//       vertical-align: center;
+//       background-color: none;
+//       &*:hover {
+//         background-color: blue;
+//         border-radius: inherit;
+//       }
+//     }
+//     & * {
+//       padding: 0.2em;
+//       border-radius: 8px;
+//       transition: ease 300ms;
+//       &:hover {
+//         transition: ease 300ms;
+//         background-color: $background-color;
+//       }
+//     }
+//   }
+// }
+
+// .hero {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 9em 0;
+//   .aside {
+//     h1 {
+//       font-size: 3.75rem;
+//       font-weight: bold;
+//       line-height: 4.2rem;
+//       width: 95%;
+//     }
+//     p {
+//       color: $tertiary-color;
+//       font-size: 1.3rem;
+//       padding-top: 0.4em;
+//       padding-bottom: 1.2em;
+//     }
+//     .buttonControl {
+//       display: flex;
+//       gap: 1em;
+//     }
+//   }
+//   .image {
+//     display: flex;
+//     justify-content: flex-end;
+//     // padding-left: 3em;
+//   }
+// }
+
+// .footer {
+//   background-color: #f0e9dc;
+//   color: $secondary-color;
+//   flex: 1;
+//   margin-left: calc(50% - 50vw);
+//   width: 100vw;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   .cardContainer {
+//     display: flex;
+//     justify-content: space-between;
+//     flex-wrap: wrap;
+//     width: 70%;
+//     margin: 0 auto;
+//     height: 100%;
+//     gap: 2em;
+//     padding: 3em 0;
+//     .card {
+//       background-color: white;
+//       min-height: 380px;
+//       width: 20vw;
+//       min-width: 250px;
+//       display: grid;
+//       grid-template-columns: 1fr;
+//       grid-template-rows: 1fr auto;
+//       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+//         0 1px 2px rgba(0, 0, 0, 0.24);
+//       transition: 300ms ease;
+//       &:hover {
+//         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+//           0 6px 6px rgba(0, 0, 0, 0.23);
+//         transition: 300ms ease;
+//         transition: 300ms ease;
+//         cursor: pointer;
+//       }
+//       .cardImage {
+//         width: 100%;
+//         height: 100%;
+//         background-color: $secondary-color;
+//       }
+//       .cardDesc {
+//         padding: 1em;
+//         font-size: 1.1rem;
+//         h3 {
+//           color: $secondary-color;
+//           font-weight: bold;
+//         }
+//         h4 {
+//           color: $primary-color;
+//         }
+//         p {
+//           padding-top: 0.5em;
+//           color: $tertiary-color;
+//         }
+//       }
+//     }
+//   }
+// }
+
+// @media (max-width: 1450px) {
+//   .container {
+//     width: 100%;
+//     padding: 2.5em;
+//   }
+//   .hero {
+//     display: grid;
+//     grid-template-columns: 1fr;
+//     place-items: center;
+//     gap: 2.5em;
+//     text-align: center;
+//     .aside {
+//       display: flex;
+//       flex-direction: column;
+//       align-items: center;
+//       h1 {
+//         width: 50%;
+//         margin: 0 auto;
+//       }
+//       p {
+//       }
+//       .buttonControl {
+//         display: flex;
+//       }
+//     }
+//     .image {
+//       display: flex;
+//       justify-content: flex-end;
+//     }
+//   }
+
+//   .nav {
+//     .logo {
+//     }
+//     .list {
+//       display: none;
+//       & li:first-child {
+//         &*:hover {
+//         }
+//       }
+//       & * {
+//         &:hover {
+//         }
+//       }
+//     }
+//   }
+// }

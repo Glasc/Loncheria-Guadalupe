@@ -1,0 +1,66 @@
+@import './variables.scss';
+
+.container {
+  min-height: 100vh;
+  width: min(100%, 1000px);
+  padding: 1.5em;
+  padding-bottom: 0;
+  background-color: $secondary-color;
+  color: $quaternary-color;
+}
+
+.menuContent {
+  background-color: $background-color;
+  border-radius: 11px;
+  padding: 2em 3.5em;
+  width: min(100%, 600px);
+  margin: 0 auto;
+  margin-top: 6em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 4.5em;
+  row-gap: 2em;
+  // & > * + * {
+  //   margin-top: 1em;
+  // }
+}
+
+.headline {
+  grid-column: 1/-1;
+  justify-self: center;
+  color: $dark-gray;
+  font-size: 1.8rem;
+  padding: 0.2em 0;
+  font-weight: bold;
+  background-color: #C9C0AF;
+  width: 100%;
+  text-align: center;
+  border-radius: 11px;
+}
+
+.section {
+  color: $dark-gray;
+  & > * + * {
+    margin-top: 0.3em;
+  }
+}
+
+.section h2 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: black;
+}
+
+.sectionElements {
+  font-size: 1.2375rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $tertiary-color;
+}
+
+.product {
+}
+
+.price {
+}
