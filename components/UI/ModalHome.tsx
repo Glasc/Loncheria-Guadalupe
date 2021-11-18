@@ -18,6 +18,7 @@ import { useRef } from 'react'
 import { Box, Text, HStack, Grid, Stack, VStack } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Button } from '@chakra-ui/button'
+import styles from './ModalHome.module.scss'
 
 function ModalHome() {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -59,7 +60,7 @@ function ModalHome() {
                   <FormHelperText>Mayor a 8 caracteres.</FormHelperText>
                 </FormControl>
                 <Grid
-                  templateColumns='1fr auto 1fr'
+                  templateColumns={'repeat(auto-fit, minmax(175px, 1fr))'}
                   gap='1em'
                   alignItems='center'
                   w='100%'
@@ -67,7 +68,6 @@ function ModalHome() {
                   <Button colorScheme='teal' type='submit'>
                     Iniciar Sesión
                   </Button>
-                  <Text textAlign='center'>or</Text>
                   <Button
                     color='white'
                     variant='solid'
