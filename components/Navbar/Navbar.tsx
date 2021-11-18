@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
       </ul>
       {toggleHamburguerIcon && (
         <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
-          <ul className={styles.navbarList}>
+          <ul className={styles.navbarListMobile}>
             <li>
               <Link href='/menu'>Menu</Link>
             </li>
