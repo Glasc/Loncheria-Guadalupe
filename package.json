@@ -5,7 +5,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc -w"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.1",

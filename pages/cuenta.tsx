@@ -7,10 +7,19 @@ import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import { FormControl, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Button } from '@chakra-ui/button'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { increment } from '../redux/counterSlice'
 
 interface CuentaProps {}
 
 const Cuenta: NextPage<CuentaProps> = ({}) => {
+  const dispatch = useAppDispatch()
+  const count = useAppSelector((state) => state.counter)
+
+  const handleClick = () => {
+    dispatch(increment())
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -25,19 +34,22 @@ const Cuenta: NextPage<CuentaProps> = ({}) => {
           />
           <FormControl id='first-name' isRequired>
             <FormLabel>Nombre</FormLabel>
-            <Input type="text" backgroundColor='#4E4342' />
+            <Input type='text' backgroundColor='#4E4342' />
           </FormControl>
           <FormControl id='first-name' isRequired>
             <FormLabel>Teléfono</FormLabel>
-            <Input type="tel" backgroundColor='#4E4342' />
+            <Input type='tel' backgroundColor='#4E4342' />
           </FormControl>
           <FormControl id='first-name' isRequired>
             <FormLabel>Dirección</FormLabel>
-            <Input type="text" backgroundColor='#4E4342' />
+            <Input type='text' backgroundColor='#4E4342' />
           </FormControl>
-          <Button w='100%' colorScheme="brand" color="white" mt={10}>Aceptar</Button>
+          <Button w='100%' colorScheme='brand' color='white' mt={10}>
+            Aceptar
+          </Button>
         </form>
       </div>
+      <p>{count.value}</p>
     </Layout>
   )
 }
