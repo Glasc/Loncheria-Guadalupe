@@ -24,26 +24,35 @@ export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
       <h2 className={styles.navbarLogo}>Lorem Ipsum</h2>
       <ul className={styles.navbarList}>
         <li>
-          <Link href='/menu'>Menu</Link>
+          <Link href='/menu'>Pedir</Link>
         </li>
         <li>
-          <Link href='#'>Ubicación</Link>
+          <Link href='/pedidos'>Pedidos</Link>
+        </li>
+        <li>
+          <Link href='/cuenta'>Cuenta</Link>
+        </li>
+        <li>
+          <Link href='/menu'>Menu</Link>
         </li>
       </ul>
       {toggleHamburguerIcon && (
-        <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
+        <animated.h1
+          style={ps}
+          className={styles.navbarListMobileCustom}
+        >
           <ul className={styles.navbarListMobile}>
             <li>
-              <Link href='#'>Pedir</Link>
+              <Link href='/menu'>Pedir</Link>
             </li>
             <li>
-              <Link href='#'>Menu</Link>
+              <Link href='/pedidos'>Pedidos</Link>
             </li>
             <li>
-              <Link href='#'>Pedidos</Link>
+              <Link href='/cuenta'>Cuenta</Link>
             </li>
             <li>
-              <Link href='#'>Cuenta</Link>
+              <Link href='/menu'>Menu</Link>
             </li>
           </ul>
         </animated.h1>
