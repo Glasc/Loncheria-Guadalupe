@@ -13,13 +13,6 @@ import { increment } from '../redux/counterSlice'
 interface CuentaProps {}
 
 const Cuenta: NextPage<CuentaProps> = ({}) => {
-  const dispatch = useAppDispatch()
-  const count = useAppSelector((state) => state.counter)
-
-  const handleClick = () => {
-    dispatch(increment())
-  }
-
   return (
     <Layout>
       <div className={styles.container}>
@@ -49,7 +42,6 @@ const Cuenta: NextPage<CuentaProps> = ({}) => {
           </Button>
         </form>
       </div>
-      <p>{count.value}</p>
     </Layout>
   )
 }
