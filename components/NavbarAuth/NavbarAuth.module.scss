@@ -15,6 +15,7 @@
 
 .hamburgerIcon {
   position: absolute;
+  top: 0.4em;
   right: 0;
 }
 
@@ -74,10 +75,19 @@
   .navbarList {
     display: flex;
   }
+  .navbarListMobile {
+    display: none;
+  }
+  .navbarListMobileCustom {
+    display: none;
+  }
 }
 
 @media (min-width: 1000px) {
   .navbarListMobile {
+    display: none;
+  }
+  .navbarListMobileCustom {
     display: none;
   }
 }

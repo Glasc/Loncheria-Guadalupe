@@ -1,0 +1,87 @@
+@import './variables.scss';
+
+.container {
+  min-height: 100vh;
+  width: min(100%, 1000px);
+  padding: 1.5em;
+  padding-bottom: 0;
+  color: white;
+  background-color: $secondary-color;
+}
+
+.main {
+  & > * + * {
+    margin-top: 1.5em;
+  }
+}
+
+.selectionAside {
+  margin-top: 2em;
+}
+
+.category {
+  & span {
+    font-size: 1.1rem;
+  }
+  & h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.cart {
+  margin: 0 -1.5em;
+  padding: 1em 1.5em;
+  background-color: #433938;
+  border-radius: 14px;
+  & h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1em;
+  }
+  & > * + * {
+    margin-top: 1em;
+  }
+}
+
+.description {
+  .descriptionTitle {
+  }
+  .descriptionDetails {
+    color: $desc-color;
+  }
+}
+
+@media (min-width: 712px) {
+  .card {
+    text-align: initial;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2em;
+  }
+  .cardsContent {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+
+  .logo {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 700px) {
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5em;
+    margin-top: 2.5em;
+  }
+
+  .cart {
+    margin: 0;
+    padding: 1em;
+    align-self: start;
+  }
+
+  .selectionAside {
+    margin: 0;
+  }
+}

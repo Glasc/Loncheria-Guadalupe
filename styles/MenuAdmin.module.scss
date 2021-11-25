@@ -9,18 +9,19 @@
   color: $quaternary-color;
 }
 
+.main {
+  display: grid;
+  gap: 2em;
+}
+
+.aside {
+}
+
 .menuContent {
   background-color: $background-color;
   border-radius: 11px;
-  padding: 2em 3em;
-  width: min(100%, 1000px);
-  margin: 0 auto;
+  padding: 2em 2em;
   margin-top: 6em;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  column-gap: 4em;
-  row-gap: 2em;
-
 }
 
 .headline {
@@ -34,6 +35,14 @@
   width: 100%;
   text-align: center;
   border-radius: 11px;
+}
+
+.categorySection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin-top: 1em;
+
 }
 
 .section {
@@ -51,10 +60,22 @@
 
 .sectionElements {
   font-size: 1.2375rem;
-  display: flex;
+  display: grid;
   align-items: center;
-  justify-content: space-between;
+  grid-template-columns: 1fr 1fr 1fr;
   color: $tertiary-color;
+  gap: 0.5em;
+}
+
+.iconWrapper {
+  justify-self: end;
+  display: flex;
+  max-width: 64px;
+  width: 64px;
+  justify-content: space-between;
+  & > * + * {
+    margin-left: 1em;
+  }
 }
 
 .product {

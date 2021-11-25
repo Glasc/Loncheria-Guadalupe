@@ -21,10 +21,12 @@ export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
 
   return (
     <nav className={styles.navbar}>
-      <h2 className={styles.navbarLogo}>Lorem Ipsum</h2>
+      <h2 className={styles.navbarLogo}>
+        <Link href="/pedidos">Lorem Ipsum</Link>
+      </h2>
       <ul className={styles.navbarList}>
         <li>
-          <Link href='/menu'>Pedir</Link>
+          <Link href='/ordenar'>Ordenar</Link>
         </li>
         <li>
           <Link href='/pedidos'>Pedidos</Link>
@@ -37,13 +39,10 @@ export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
         </li>
       </ul>
       {toggleHamburguerIcon && (
-        <animated.h1
-          style={ps}
-          className={styles.navbarListMobileCustom}
-        >
+        <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
           <ul className={styles.navbarListMobile}>
             <li>
-              <Link href='/menu'>Pedir</Link>
+              <Link href='/ordenar'>Ordenar</Link>
             </li>
             <li>
               <Link href='/pedidos'>Pedidos</Link>

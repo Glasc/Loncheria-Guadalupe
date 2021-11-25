@@ -50,7 +50,7 @@ function ModalHome() {
           <ModalBody>
             <form>
               <VStack spacing={4}>
-                <FormControl id='email' autocomplete='off'>
+                <FormControl id='email' autoComplete='off'>
                   <FormLabel>Correo</FormLabel>
                   <Input type='email' ref={firstInput} />
                 </FormControl>

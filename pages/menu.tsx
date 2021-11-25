@@ -2,7 +2,7 @@ import { NextPage, InferGetStaticPropsType } from 'next'
 import { Navbar } from '../components/Navbar/Navbar'
 import styles from '../styles/Menu.module.scss'
 import { Layout } from '../components/Layout'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react';
 import db from '../firebase/firebaseConfig'
 import {
   addDoc,
@@ -35,17 +35,15 @@ const recipeList = [
   { sectionName: 'Torta', variants: [{ name: 'Pierna', price: '45' }] },
 ]
 
-const Menu: NextPage = ({ recipes: recipeList }: any) => {
+const Menu: NextPage = ({
+  recipes: recipeList,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+
+  const [isEditing, setIsEditing] = useState()
+
   const dispatch = useAppDispatch()
 
-  useEffect(() => {
-    // const shoot = async () => {
-
-    // }
-
-    // shoot()
- 
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <Layout>
