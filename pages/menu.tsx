@@ -1,4 +1,4 @@
-import { NextPage, InferGetStaticPropsType } from 'next'
+import { NextPage, InferGetStaticPropsType, GetServerSideProps } from 'next'
 import { Navbar } from '../components/Navbar/Navbar'
 import styles from '../styles/Menu.module.scss'
 import { Layout } from '../components/Layout'
@@ -81,7 +81,7 @@ const Product: React.FC<ProductTypes> = ({ sectionName, variants }) => {
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const data = await getDocs(collection(db, 'recipes'))
   // const recipes = data.docs[0].data()
 
