@@ -18,9 +18,9 @@ import { useRef } from 'react'
 import { Box, Text, HStack, Grid, Stack, VStack } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Button } from '@chakra-ui/button'
-import styles from './ModalHome.module.scss'
+import styles from './ModalLogin.module.scss'
 
-function ModalHome() {
+function ModalLogin() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const firstInput = useRef<any>()
@@ -88,4 +88,4 @@ function ModalHome() {
   )
 }
 
-export default ModalHome
+export default ModalLogin

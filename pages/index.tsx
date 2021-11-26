@@ -9,8 +9,9 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
 import { useSpring, animated } from 'react-spring'
 import { Navbar } from '../components/Navbar/Navbar'
-import ModalHome from '../components/UI/ModalHome'
 import { useColorMode } from '@chakra-ui/color-mode'
+import ModalLogin from '../components/UI/ModalLogin'
+import { ModalRegister } from '../components/UI/ModalRegister'
 
 const Home: NextPage = (props) => {
   return (
@@ -34,14 +35,15 @@ const Hero = () => {
         </h1>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut</p>
         <div className={styles.heroButtonWrapper}>
-          <ModalHome />
-          <Button
+          <ModalLogin />
+          <ModalRegister />
+          {/* <Button
             className={styles.heroButton}
             variant='outline'
             size='md'
           >
             Regístrate
-          </Button>
+          </Button> */}
         </div>
       </aside>
       <div className={styles.heroImageWrapper}>

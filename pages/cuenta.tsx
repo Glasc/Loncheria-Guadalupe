@@ -13,6 +13,9 @@ import { increment } from '../redux/counterSlice'
 interface CuentaProps {}
 
 const Cuenta: NextPage<CuentaProps> = ({}) => {
+
+  
+
   return (
     <Layout>
       <NavbarAuth />
