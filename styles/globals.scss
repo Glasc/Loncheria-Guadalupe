@@ -5,11 +5,16 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Poppins', sans-serif;
   background-color: $secondary-color;
 }
 
-h1, h2, h3, h4, h5, a, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+p {
   margin: 0;
   padding: 0;
 }
@@ -21,4 +26,5 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }

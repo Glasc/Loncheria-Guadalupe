@@ -15,11 +15,9 @@ import { useColorMode } from '@chakra-ui/color-mode'
 const Home: NextPage = (props) => {
   return (
     <Layout>
-      <div className={styles.container}>
-        <Navbar />
-        <Hero />
-        <CardsContent />
-      </div>
+      <Navbar />
+      <Hero />
+      <CardsContent />
     </Layout>
   )
 }

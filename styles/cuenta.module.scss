@@ -8,20 +8,17 @@
   padding-bottom: 0;
   background-color: $secondary-color;
   color: $quaternary-color;
-  display: grid;
-  grid-template-rows: auto 1fr;
-  font-family: "Poppins"
+
 }
 
 .form {
   align-self: center;
   width: min(400px, 100%);
-  margin: 0 auto;
+  margin: 6em auto;
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: "Arial";
   & > * + * {
     margin-top: 1em;
   }

@@ -31,19 +31,17 @@ interface MenuPanelProps {}
 const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
   return (
     <Layout>
-      <div className={styles.container}>
-        <NavbarAuth />
-        <main className={styles.main}>
-          <div className={styles.menuContent}>
-            <h2 className={styles.headline}>Menú</h2>
-            <div className={styles.section}>
-              <Category categoryName='Torta' />
-              <Product productName='Panela' price={19} />
-            </div>
+      <NavbarAuth />
+      <main className={styles.main}>
+        <div className={styles.menuContent}>
+          <h2 className={styles.headline}>Menú</h2>
+          <div className={styles.section}>
+            <Category categoryName='Torta' />
+            <Product productName='Panela' price={19} />
           </div>
-          <MenuPanel />
-        </main>
-      </div>
+        </div>
+        <MenuPanel />
+      </main>
     </Layout>
   )
 }
@@ -77,8 +75,20 @@ const Product: React.FC<ProductProps> = ({ price, productName }) => {
     <div className={styles.sectionElements}>
       {isEditing ? (
         <>
-          <Input _placeholder={{color: 'gray.50'}}placeholder={productName} color='white' type='text' backgroundColor='#4E4342' />
-          <Input _placeholder={{color: 'gray.50'}}placeholder={"precio"} color='white' type='text' backgroundColor='#4E4342' />
+          <Input
+            _placeholder={{ color: 'gray.50' }}
+            placeholder={productName}
+            color='white'
+            type='text'
+            backgroundColor='#4E4342'
+          />
+          <Input
+            _placeholder={{ color: 'gray.50' }}
+            placeholder={'precio'}
+            color='white'
+            type='text'
+            backgroundColor='#4E4342'
+          />
         </>
       ) : (
         <>

@@ -1,0 +1,22 @@
+@import '../styles/variables.scss';
+
+.layout {
+  min-height: 100%;
+  max-width: 100%;
+  background-color: #342c2b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+.container {
+  min-height: 100vh;
+  width: min(100%, 1000px);
+  padding: 1.5em;
+  padding-bottom: 0;
+  background-color: $secondary-color;
+  color: $quaternary-color;
+}

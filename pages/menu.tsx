@@ -2,7 +2,7 @@ import { NextPage, InferGetStaticPropsType } from 'next'
 import { Navbar } from '../components/Navbar/Navbar'
 import styles from '../styles/Menu.module.scss'
 import { Layout } from '../components/Layout'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import db from '../firebase/firebaseConfig'
 import {
   addDoc,
@@ -36,9 +36,8 @@ const recipeList = [
 ]
 
 const Menu: NextPage = ({
-  recipes: recipeList,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
-
+      recipes: recipeList,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [isEditing, setIsEditing] = useState()
 
   const dispatch = useAppDispatch()
@@ -47,21 +46,19 @@ const Menu: NextPage = ({
 
   return (
     <Layout>
-      <div className={styles.container}>
-        <Navbar />
-        <div className={styles.menuContent}>
-          <h2 className={styles.headline}>Menú</h2>
-          {recipeList.map((currRecipe: any, idx: any) => {
-            const { sectionName, variants } = currRecipe
-            return (
-              <Product
-                sectionName={sectionName}
-                variants={variants}
-                key={idx}
-              />
-            )
-          })}
-        </div>
+      <Navbar />
+      <div className={styles.menuContent}>
+        <h2 className={styles.headline}>Menú</h2>
+        {recipeList.map((currRecipe: any, idx: any) => {
+          const { sectionName, variants } = currRecipe
+          return (
+            <Product
+              sectionName={sectionName}
+              variants={variants}
+              key={idx}
+            />
+          )
+        })}
       </div>
     </Layout>
   )
