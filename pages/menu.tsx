@@ -1,4 +1,4 @@
-import { NextPage, InferGetStaticPropsType, GetServerSideProps } from 'next'
+import { NextPage, InferGetStaticPropsType, GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { Navbar } from '../components/Navbar/Navbar'
 import styles from '../styles/Menu.module.scss'
 import { Layout } from '../components/Layout'
@@ -36,8 +36,8 @@ const recipeList = [
 ]
 
 const Menu: NextPage = ({
-      recipes: recipeList,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  recipes: recipeList,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isEditing, setIsEditing] = useState()
 
   const dispatch = useAppDispatch()
