@@ -1,18 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NextPage } from 'next'
 import styles from '../styles/Ordenar.module.scss'
 import { Layout } from '../components/Layout'
 import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import { Select } from '@chakra-ui/select'
 import { LightMode } from '@chakra-ui/color-mode'
-import { Radio, RadioGroup } from '@chakra-ui/radio'
+import { Radio, RadioGroup } from '@chakra-ui/react'
 import { Stack } from '@chakra-ui/layout'
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/button'
+import { doc, updateDoc } from '@firebase/firestore'
+import db from '../firebase/firebaseConfig'
+import { useAppDispatch } from '../redux/hooks'
+import { modifyRecipe } from '../redux/recipeSlice'
 
 interface OrdenarProps {}
 
 const Ordenar: NextPage<OrdenarProps> = ({}) => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    console.log('')
+    dispatch(
+      modifyRecipe({
+        id: 'WnkOEIKmaRJVamINIGm2',
+        newRecipeValue: 'Recipe o-o',
+      })
+    )
+  }, [dispatch])
+
   return (
     <Layout>
       <NavbarAuth />
@@ -39,13 +55,13 @@ const Ordenar: NextPage<OrdenarProps> = ({}) => {
                   <Radio colorScheme='green' value='1'>
                     Pierna
                   </Radio>
-                  <Radio colorScheme='green' value='2'>
+                  <Radio colorScheme='green' value='0'>
                     Panela
                   </Radio>
-                  <Radio colorScheme='green' value='3'>
+                  <Radio colorScheme='green' value='0'>
                     Jamón
                   </Radio>
-                  <Radio colorScheme='green' value='4'>
+                  <Radio colorScheme='green' value='0'>
                     Cubana
                   </Radio>
                 </Stack>

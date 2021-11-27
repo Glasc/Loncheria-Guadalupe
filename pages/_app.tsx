@@ -1,8 +1,9 @@
 import '../styles/globals.scss'
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AppProps } from 'next/dist/shared/lib/router/router'
 import { store } from '../redux/store'
 import { Provider } from 'react-redux'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+
 
 const theme = extendTheme({
   colors: {

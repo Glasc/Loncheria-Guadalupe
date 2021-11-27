@@ -33,6 +33,17 @@ export const addNewRecipe = createAsyncThunk(
   }
 )
 
+export const modifyRecipe = createAsyncThunk(
+  'recipe/modifyRecipe',
+  async (payload: { id: string; newRecipeValue: string }) => {
+    const docRef = doc(db, 'recipes', `${payload.id}`)
+
+    return await updateDoc(docRef, {
+      sectionName: payload.newRecipeValue,
+    })
+  }
+)
+
 export const deleteRecipe = createAsyncThunk(
   'recipe/deleteRecipe',
   async (payload: { id: string }, thunkAPI) => {
@@ -95,6 +106,14 @@ export const recipeSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(modifyRecipe.fulfilled, (state, action) => {
+      // Add user to the state array
+      console.log('Successfully modified')
+    })
+    builder.addCase(modifyRecipe.rejected, (state, action) => {
+      // Add user to the state array
+      console.log('Something went bad modifying the recipe')
+    })
     builder.addCase(addNewRecipe.fulfilled, (state, action) => {
       // Add user to the state array
       console.log('Successful')
