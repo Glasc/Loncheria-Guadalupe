@@ -9,10 +9,10 @@ import { Radio, RadioGroup } from '@chakra-ui/react'
 import { Stack } from '@chakra-ui/layout'
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import { Button } from '@chakra-ui/button'
-import { doc, updateDoc } from '@firebase/firestore'
+import { doc, updateDoc, getDoc } from '@firebase/firestore'
 import db from '../firebase/firebaseConfig'
 import { useAppDispatch } from '../redux/hooks'
-import { modifyRecipe } from '../redux/recipeSlice'
+import { modifyRecipe, addVariant, modifyVariant } from '../redux/recipeSlice';
 
 interface OrdenarProps {}
 
@@ -20,13 +20,14 @@ const Ordenar: NextPage<OrdenarProps> = ({}) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    console.log('')
-    dispatch(
-      modifyRecipe({
-        id: 'WnkOEIKmaRJVamINIGm2',
-        newRecipeValue: 'Recipe o-o',
-      })
-    )
+    
+    // ((async () => { 
+    //   const docRef = doc(db, 'recipes', 'WnkOEIKmaRJVamINIGm2')
+    //   const da = await getDoc(docRef)
+
+    //   console.log(da.data().variants) 
+    // }))()
+
   }, [dispatch])
 
   return (

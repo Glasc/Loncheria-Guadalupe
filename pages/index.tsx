@@ -1,19 +1,32 @@
-import { Button } from '@chakra-ui/button'
 import type { NextPage } from 'next'
-import Head from 'next/head'
 import Image from 'next/image'
 import { Layout } from '../components/Layout'
 import styles from '../styles/Home.module.scss'
-import Link from 'next/link'
-import { HamburgerIcon } from '@chakra-ui/icons'
 import { useState, useEffect } from 'react'
-import { useSpring, animated } from 'react-spring'
 import { Navbar } from '../components/Navbar/Navbar'
 import { useColorMode } from '@chakra-ui/color-mode'
-import ModalLogin from '../components/UI/ModalLogin'
-import { ModalRegister } from '../components/UI/ModalRegister'
+import ModalLogin from '../components/UI/auth/ModalLogin'
+import { ModalRegister } from '../components/UI/auth/ModalRegister'
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { auth } from '../firebase/firebaseConfig'
+import { saveUser } from '../redux/authSlice'
+import { onAuthStateChanged } from '@firebase/auth'
 
 const Home: NextPage = (props) => {
+  const dispatch = useAppDispatch()
+  
+  const user = useAppSelector((state) => state.auth.value)
+  console.log('user from state', user)
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user.refreshToken))
+      } else {
+        dispatch(saveUser(undefined))
+      }
+    })
+  }, [dispatch])
+
   return (
     <Layout>
       <Navbar />
@@ -25,6 +38,7 @@ const Home: NextPage = (props) => {
 
 const Hero = () => {
   const { toggleColorMode } = useColorMode()
+
   return (
     <section className={styles.hero}>
       <aside className={styles.heroDescription}>

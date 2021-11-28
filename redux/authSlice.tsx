@@ -3,33 +3,29 @@ import type { RootState } from './store'
 
 // Define a type for the slice state
 interface CounterStateProps {
-  value: number
+  value: any
 }
 
 // Define the initial state using that type
 const initialState: CounterStateProps = {
-  value: 0,
+  value: ""
 }
 
-export const userAuthSlice = createSlice({
-  name: 'userAuth',
-  // `createSlice` will infer the state type from the `initialState` argument
-  initialState: {
-    userData: {},
-    initialized: false
-  },
+export const authSlice = createSlice({
+  name: 'user',
+  initialState,
   reducers: {
-    increment: (state) => {},
-    decrement: (state) => {},
+    saveUser: (state, action) => {
+      state.value = action.payload
+    },
     // Use the PayloadAction type to declare the contents of `action.payload`
     incrementByAmount: (state, action: PayloadAction<number>) => {},
   },
 })
 
-export const { increment, decrement, incrementByAmount } =
-  userAuthSlice.actions
+export const { saveUser } = authSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.counter.value
+// export const selectCount = (state: RootState) => state.counter.value
 
-export default userAuthSlice.reducer
+export default authSlice.reducer

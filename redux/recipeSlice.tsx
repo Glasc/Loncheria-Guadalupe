@@ -52,6 +52,56 @@ export const deleteRecipe = createAsyncThunk(
   }
 )
 
+export const addVariant = createAsyncThunk(
+  'recipe/addVariant',
+  async (
+    payload: { id: string; variantName: string; price: number },
+    thunkAPI
+  ) => {
+    const docRef = doc(db, 'recipes', payload.id)
+
+    const res = await getDoc(docRef)
+
+    const data: [] = res.data()!.variants
+
+    return await updateDoc(docRef, {
+      variants: [
+        ...data,
+        { name: payload.variantName, price: payload.price },
+      ],
+    })
+  }
+)
+
+export const modifyVariant = createAsyncThunk(
+  'recipe/modifyVariant',
+  async (payload: {
+    id: string
+    variantName: string
+    newVariantName: string
+    newVariantPrice: number
+  }) => {
+    const docRef = doc(db, 'recipes', `${payload.id}`)
+
+    const variantList: { name: string; price: number }[] = await (
+      await getDoc(docRef)
+    ).data()!.variants
+
+    const variantTargetId: number = variantList.findIndex(
+      (currTarget) => currTarget.name === payload.variantName
+    )
+
+    variantList[variantTargetId] = {
+      name: payload.newVariantName,
+      price: payload.newVariantPrice,
+    }
+
+    return await updateDoc(docRef, {
+      variants: variantList
+    })
+  }
+)
+
 export const deleteVariant = createAsyncThunk(
   'recipe/deleteVariant',
   async (payload: { id: string; fieldName: string }, thunkAPI) => {
