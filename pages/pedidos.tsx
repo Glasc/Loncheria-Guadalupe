@@ -1,19 +1,48 @@
-import React from 'react'
-import { NextPage } from 'next'
+import React, { useEffect, useState } from 'react'
+import {
+  NextPage,
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from 'next'
 import styles from '../styles/Pedidos.module.scss'
 import { Layout } from '../components/Layout'
 import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import { Button } from '@chakra-ui/button'
 import { CheckCircleIcon } from '@chakra-ui/icons'
+import { getAuth } from 'firebase/auth'
+import { setDoc, doc, getDoc, addDoc } from '@firebase/firestore'
+import db from '../firebase/firebaseConfig'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { getOrders, selectUID, setUserID } from '../redux/authSlice'
+import { onAuthStateChanged } from '@firebase/auth'
+import { auth } from '../firebase/firebaseConfig'
 
 interface PedidosProps {}
 
 const Pedidos: NextPage<PedidosProps> = ({}) => {
+  const dispatch = useAppDispatch()
+
+  const uid = useAppSelector(selectUID)
+  const ordersList = useAppSelector((state) => state.auth.orders)
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(setUserID(user.uid))
+    } else {
+    }
+  })
+
+  useEffect(() => {
+    if (!uid) return
+    dispatch(getOrders({ uid }))
+    console.log(uid)
+  }, [uid, dispatch])
+
   return (
     <Layout>
       <NavbarAuth />
       <div className={styles.buttonWrapper}>
-        <Button backgroundColor='white' colorScheme='orange'>
+        <Button variant='outline' colorScheme='orange'>
           Limpiar
         </Button>
       </div>
@@ -25,7 +54,7 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
           <div className={styles.cardAside}>
             <div className={styles.description}>
               <h2>Confirmado</h2>
-              <p>Guadalupe Sánchez #812</p>
+              <p>Emiliano Zapata #734</p>
               <p>16/11/2021 08:22 PM</p>
             </div>
             <div className={styles.cardButtonWrapper}>
@@ -43,7 +72,7 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
           <div className={styles.cardAside}>
             <div className={styles.description}>
               <h2>Confirmado</h2>
-              <p>Guadalupe Sánchez #812</p>
+              <p>Emiliano Zapata #734</p>
               <p>16/11/2021 08:22 PM</p>
             </div>
             <div className={styles.cardButtonWrapper}>
@@ -61,7 +90,7 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
           <div className={styles.cardAside}>
             <div className={styles.description}>
               <h2>Confirmado</h2>
-              <p>Guadalupe Sánchez #812</p>
+              <p>Emiliano Zapata #734</p>
               <p>16/11/2021 08:22 PM</p>
             </div>
             <div className={styles.cardButtonWrapper}>
@@ -78,3 +107,35 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
 }
 
 export default Pedidos
+
+// useEffect(() => {
+//   const auth = getAuth()
+//   const user = auth.currentUser
+
+//   if (user) {
+//     console.log(user.uid)
+//     ;(async () => {
+//       await setDoc(doc(db, 'users', user.uid), {
+//         pedidos: [
+//           {
+//             id: new Date().valueOf(),
+//             estado: '',
+//             direccion: '',
+//             fecha: '',
+//             total: '',
+//             productosPedidos: [
+//               {
+//                 producto: '2 Quesadillas sincronizadas',
+//                 descripcion: 'Con todo',
+//               },
+//               {
+//                 producto: '2 Tortas de pierna',
+//                 descripcion: 'Con todo',
+//               },
+//             ],
+//           },
+//         ],
+//       })
+//     })()
+//   }
+// }, [])

@@ -7,33 +7,48 @@ import { Navbar } from '../components/Navbar/Navbar'
 import { useColorMode } from '@chakra-ui/color-mode'
 import ModalLogin from '../components/UI/auth/ModalLogin'
 import { ModalRegister } from '../components/UI/auth/ModalRegister'
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { auth } from '../firebase/firebaseConfig'
-import { saveUser } from '../redux/authSlice'
-import { onAuthStateChanged } from '@firebase/auth'
+import { saveUser, setUserID } from '../redux/authSlice'
+import { onAuthStateChanged, getAuth } from '@firebase/auth'
+import { useRouter } from 'next/router'
+import { Loading } from '../utils/Loading'
 
 const Home: NextPage = (props) => {
+  const router = useRouter()
   const dispatch = useAppDispatch()
-  
-  const user = useAppSelector((state) => state.auth.value)
+  const user = useAppSelector((state) => state.auth.value) || null
   console.log('user from state', user)
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(saveUser(user.refreshToken))
-      } else {
-        dispatch(saveUser(undefined))
-      }
-    })
-  }, [dispatch])
 
-  return (
-    <Layout>
-      <Navbar />
-      <Hero />
-      <CardsContent />
-    </Layout>
-  )
+
+  const [showMain, setShowMain] = useState<boolean>(false)
+
+  onAuthStateChanged(auth, (user) => {
+    console.log(user)
+    if (user) {
+      dispatch(saveUser(user.refreshToken))
+      dispatch(setUserID(user.uid))
+      router.push('/pedidos')
+    } else {
+      dispatch(saveUser(undefined))
+      setShowMain(true)
+      dispatch(setUserID(null))
+    }
+  })
+
+  if (showMain) {
+    return (
+      <Layout>
+        <>
+          <Navbar />
+          <Hero />
+          <CardsContent />
+        </>
+      </Layout>
+    )
+  }
+
+  return <Loading />
 }
 
 const Hero = () => {

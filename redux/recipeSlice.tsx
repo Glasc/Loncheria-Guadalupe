@@ -14,7 +14,6 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit'
-import { stringify } from 'querystring'
 import db from '../firebase/firebaseConfig'
 import { ProductTypes } from '../shared/types'
 import type { RootState } from './store'
@@ -97,7 +96,7 @@ export const modifyVariant = createAsyncThunk(
     }
 
     return await updateDoc(docRef, {
-      variants: variantList
+      variants: variantList,
     })
   }
 )
@@ -123,6 +122,15 @@ export const deleteVariant = createAsyncThunk(
     })
 
     return ''
+  }
+)
+
+export const getRecipes = createAsyncThunk(
+  'auth/getRecipes',
+  async (payload, thunkAPI) => {
+    const docRef = collection(db, 'recipes')
+
+    return await getDocs(docRef)
   }
 )
 
@@ -179,6 +187,15 @@ export const recipeSlice = createSlice({
     builder.addCase(deleteRecipe.rejected, (state, action) => {
       // Add user to the state array
       console.log(':(')
+    })
+    builder.addCase(getRecipes.rejected, (state, action) => {
+      // Add user to the state array
+      const docs: any = action.payload
+
+      docs.forEach((doc: any) => {
+        const { sectionName, variants, ingredients } = doc.data()
+        
+      })
     })
   },
 })
