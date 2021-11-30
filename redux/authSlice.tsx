@@ -54,6 +54,7 @@ interface CounterStateProps {
   orders: []
   cartItems: []
   cartTotal: number
+  address: string
 }
 
 const initialState: CounterStateProps = {
@@ -62,6 +63,7 @@ const initialState: CounterStateProps = {
   orders: [],
   cartItems: [],
   cartTotal: 0,
+  address: ""
 }
 
 export const authSlice = createSlice({
@@ -73,6 +75,12 @@ export const authSlice = createSlice({
     },
     setUserID: (state, action) => {
       state.uid = action.payload
+    },
+    setUserAddress: (state, action) => {
+      state.address = action.payload
+    },
+    setCartItems: (state, action) => {
+      state.cartItems = action.payload
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
   },
@@ -99,7 +107,7 @@ export const authSlice = createSlice({
   },
 })
 
-export const { saveUser, setUserID } = authSlice.actions
+export const { saveUser, setUserID, setUserAddress } = authSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectCount = (state: RootState) => state.counter.value
@@ -107,6 +115,7 @@ export const { saveUser, setUserID } = authSlice.actions
 export const selectUID = (state: RootState) => state.auth.uid
 export const selectCartItems = (state: RootState) => state.auth.cartItems
 export const selectCartTotal = (state: RootState) => state.auth.cartTotal
+export const selectUserAddress = (state: RootState) => state.auth.address
 export const selectFirstCartListName = (state: RootState) =>
   state.auth.cartItems
 

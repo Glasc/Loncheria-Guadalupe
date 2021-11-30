@@ -16,27 +16,29 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { getOrders, selectUID, setUserID } from '../redux/authSlice'
 import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
+import { useOrder } from '../hooks/useOrder'
 
 interface PedidosProps {}
 
 const Pedidos: NextPage<PedidosProps> = ({}) => {
   const dispatch = useAppDispatch()
 
-  const uid = useAppSelector(selectUID)
-  const ordersList = useAppSelector((state) => state.auth.orders)
+  const uid: string = useAppSelector(selectUID) || ''
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      dispatch(setUserID(user.uid))
-    } else {
-    }
-  })
+  const { allOrders } = useOrder({ uid })
+
+  const {date, state, orderList} = allOrders
 
   useEffect(() => {
-    if (!uid) return
-    dispatch(getOrders({ uid }))
-    console.log(uid)
-  }, [uid, dispatch])
+    console.log(allOrders)
+  }, [allOrders])
+
+  useEffect(() => {
+    onAuthStateChanged(
+      auth,
+      (user) => user && dispatch(setUserID(user.uid))
+    )
+  }, [dispatch])
 
   return (
     <Layout>

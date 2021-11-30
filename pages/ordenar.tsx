@@ -24,25 +24,22 @@ import {
 } from '@firebase/firestore'
 import db, { auth } from '../firebase/firebaseConfig'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
-import { getAuth } from 'firebase/auth'
 import { onAuthStateChanged } from '@firebase/auth'
-import {
-  modifyRecipe,
-  addVariant,
-  modifyVariant,
-} from '../redux/recipeSlice'
+
 import {
   getCartItems,
   selectUID,
   selectCartItems,
   setUserID,
   addCartItem,
-  selectFirstCartListName,
   getCartTotal,
   selectCartTotal,
 } from '../redux/authSlice'
 import { CartItems, ProductTypes } from '../shared/types'
 import { AddIcon, MinusIcon } from '@chakra-ui/icons'
+import { useOrder } from '../hooks/useOrder'
+import { useProfile } from '../hooks/useProfile'
+import { useCart } from '../hooks/useCart'
 
 // addCartItem({
 //   newCartItem: {
@@ -72,16 +69,23 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
 
     const total = useAppSelector(selectCartTotal)
 
+    const { setOrder, isLoading } = useOrder({ uid: UID })
+    const { cartItemList }: any = useCart({ uid: UID })
+    const { initialInputs, getInitialInputs } = useProfile({ uid: UID })
+
     const [checkedItems, setCheckedItems] = useState<
       { currIngredient: string; checked: boolean }[]
     >([{ currIngredient: '', checked: false }])
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        dispatch(setUserID(user.uid))
-      } else {
-      }
-    })
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          dispatch(setUserID(user.uid))
+        }
+      })
+      if (initialInputs) return
+      getInitialInputs()
+    }, [dispatch, getInitialInputs, initialInputs])
 
     useEffect(() => {
       ;(async () => {
@@ -94,8 +98,8 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
             }
           )
           await dispatch(getCartTotal({ uid: UID }))
-          console.log(itemm[0].sectionName)
-          setCurrSelection(itemm[0].sectionName)
+          setCurrSelection(cartItemList[0].sectionName)
+          
         }
       })()
     }, [cartItems, dispatch, UID])
@@ -282,7 +286,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
                 </Stack>
               </section>
               <section className={styles.category}>
-                <Flex alignItems='center' gridGap={3} userSelect="none">
+                <Flex alignItems='center' gridGap={3} userSelect='none'>
                   <h2 style={{ marginRight: '0.5em' }}>Cantidad:</h2>
                   <MinusIcon
                     bg='white'
@@ -391,6 +395,11 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
               variant='solid'
               size='lg'
               w='100%'
+              onClick={async () => {
+                await setOrder({ cartItems })
+                await dispatch(getCartItems({ uid: UID }))
+                await dispatch(getCartTotal({ uid: UID }))
+              }}
             >
               Aceptar
             </Button>

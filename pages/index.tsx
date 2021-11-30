@@ -18,23 +18,22 @@ const Home: NextPage = (props) => {
   const router = useRouter()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.auth.value) || null
-  console.log('user from state', user)
-
 
   const [showMain, setShowMain] = useState<boolean>(false)
 
-  onAuthStateChanged(auth, (user) => {
-    console.log(user)
-    if (user) {
-      dispatch(saveUser(user.refreshToken))
-      dispatch(setUserID(user.uid))
-      router.push('/pedidos')
-    } else {
-      dispatch(saveUser(undefined))
-      setShowMain(true)
-      dispatch(setUserID(null))
-    }
-  })
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user.refreshToken))
+        dispatch(setUserID(user.uid))
+        router.push('/pedidos')
+      } else {
+        dispatch(saveUser(undefined))
+        setShowMain(true)
+        dispatch(setUserID(null))
+      }
+    })
+  }, [dispatch, router])
 
   if (showMain) {
     return (

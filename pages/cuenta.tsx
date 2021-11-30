@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NextPage } from 'next'
 import styles from '../styles/cuenta.module.scss'
 import { Layout } from '../components/Layout'
@@ -9,17 +9,62 @@ import { Input } from '@chakra-ui/input'
 import { Button } from '@chakra-ui/button'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { increment } from '../redux/counterSlice'
+import { saveProfileProps, useProfile } from '../hooks/useProfile'
+import { selectUID, setUserID } from '../redux/authSlice'
+import { onAuthStateChanged } from '@firebase/auth'
+import { auth } from '../firebase/firebaseConfig'
+import { Spinner } from '@chakra-ui/spinner'
+import { Box } from '@chakra-ui/layout'
+import { Loading } from '../components/UI/Loading'
 
 interface CuentaProps {}
 
 const Cuenta: NextPage<CuentaProps> = ({}) => {
+  const dispatch = useAppDispatch()
+  const uid: string = useAppSelector(selectUID) || ''
+  const { saveProfile, isLoading, getInitialInputs, initialInputs }: any =
+    useProfile({ uid })
 
+  // form inputs
+  const [name, setName] = useState<string>('')
+  const [telephoneNumber, setTelephoneNumber] = useState<string>('')
+  const [address, setAddress] = useState<string>('')
+  // form inputs
+
+  useEffect(() => {
+    ;(async () => {
+      if (initialInputs) return
+      await getInitialInputs()
+    })()
+  }, [getInitialInputs, initialInputs])
+
+  useEffect(() => {
+    if (initialInputs) {
+      setName(initialInputs.name)
+      setTelephoneNumber(initialInputs.telephoneNumber)
+      setAddress(initialInputs.address)
+    }
+  }, [initialInputs])
+
+  useEffect(() => {
+    onAuthStateChanged(
+      auth,
+      (user) => user && dispatch(setUserID(user.uid))
+    )
+  }, [dispatch])
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault()
+
+    saveProfile({ name, telephoneNumber, address })
+  }
   
+  if (isLoading) return <Loading />
 
   return (
     <Layout>
       <NavbarAuth />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Image
           src='/assets/profile_maininblack.jpg'
           alt='Cuenta'
@@ -27,25 +72,50 @@ const Cuenta: NextPage<CuentaProps> = ({}) => {
           height={200}
           className={styles.profileImage}
         />
+
         <FormControl id='first-name' isRequired>
           <FormLabel fontSize='larger' fontWeight='regular'>
             Nombre
           </FormLabel>
-          <Input type='text' backgroundColor='#4E4342' />
+          <Input
+            type='text'
+            backgroundColor='#4E4342'
+            value={name}
+            border='none'
+            onChange={(e) => setName(e.target.value)}
+          />
         </FormControl>
         <FormControl id='first-name' isRequired>
           <FormLabel fontSize='larger' fontWeight='regular'>
             Teléfono
           </FormLabel>
-          <Input type='tel' backgroundColor='#4E4342' />
+          <Input
+            type='tel'
+            backgroundColor='#4E4342'
+            border='none'
+            value={telephoneNumber}
+            onChange={(e) => setTelephoneNumber(e.target.value)}
+          />
         </FormControl>
         <FormControl id='first-name' isRequired>
           <FormLabel fontSize='larger' fontWeight='regular'>
             Dirección
           </FormLabel>
-          <Input type='text' backgroundColor='#4E4342' />
+          <Input
+            type='text'
+            backgroundColor='#4E4342'
+            value={address}
+            border='none'
+            onChange={(e) => setAddress(e.target.value)}
+          />
         </FormControl>
-        <Button w='100%' colorScheme='brand' color='white' mt={10}>
+        <Button
+          type='submit'
+          w='100%'
+          colorScheme='brand'
+          color='white'
+          mt={10}
+        >
           Aceptar
         </Button>
       </form>
