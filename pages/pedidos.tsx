@@ -18,6 +18,7 @@ import {
   selectUID,
   setUserID,
   getCartTotal,
+  saveUser,
 } from '../redux/authSlice'
 import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
@@ -34,10 +35,19 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
   const { allIds, byId } = allOrders
 
   useEffect(() => {
-    onAuthStateChanged(
-      auth,
-      (user) => user && dispatch(setUserID(user.uid))
-    )
+    // onAuthStateChanged(
+    //   auth,
+    //   (user) => user && dispatch(setUserID(user.uid))
+    // )  
+     onAuthStateChanged(auth, (user) => {
+       if (user) {
+         dispatch(saveUser(user.refreshToken))
+         dispatch(setUserID(user.uid))
+       } else {
+         dispatch(saveUser(undefined))
+         dispatch(setUserID(null))
+       }
+     })
   }, [dispatch])
 
   return (

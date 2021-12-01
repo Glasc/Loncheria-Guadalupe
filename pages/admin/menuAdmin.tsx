@@ -1,12 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NextPage } from 'next'
-import styles from '../styles/MenuAdmin.module.scss'
-import { Layout } from '../components/Layout'
-import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
+import styles from '../../styles/MenuAdmin.module.scss'
+import { Layout } from '../../components/Layout'
+import { NavbarAuth } from '../../components/NavbarAuth/NavbarAuth'
 import { Button } from '@chakra-ui/button'
 import { CheckCircleIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
-import { Navbar } from '../components/Navbar/Navbar'
-import { Grid, VStack, Text } from '@chakra-ui/layout'
+import { Navbar } from '../../components/Navbar/Navbar'
+import { Grid, VStack, Text, Flex } from '@chakra-ui/layout'
 import {
   FormControl,
   FormHelperText,
@@ -16,6 +16,9 @@ import { Input } from '@chakra-ui/input'
 import { Select } from '@chakra-ui/select'
 import { LightMode } from '@chakra-ui/color-mode'
 import { useState } from 'react'
+import { useMenuModifier } from '../../hooks/useMenuModifier'
+import { useAppDispatch } from '../../redux/hooks'
+import { addNewRecipe, addVariant } from '../../redux/recipeSlice'
 
 interface MenuAdminProps {}
 
@@ -56,7 +59,7 @@ const Category: React.FC<CategoryProps> = ({ categoryName }) => {
       {isEditing ? (
         <Input color='white' type='text' backgroundColor='#4E4342' />
       ) : (
-        <h2>{categoryName}</h2>
+        <h2 style={{}}>{categoryName}</h2>
       )}
       <div className={styles.iconWrapper}>
         <EditIcon w={5} h={5} cursor='pointer' onClick={toggleEdit} />
@@ -105,6 +108,54 @@ const Product: React.FC<ProductProps> = ({ price, productName }) => {
 }
 
 const MenuPanel = () => {
+  const dispatch = useAppDispatch()
+
+  const {
+    initialDropdownValue,
+    setInitialDropdownValue,
+    recipes,
+    setRecipes,
+    dropDownId,
+    setDropDownId,
+  }: any = useMenuModifier()
+
+  const [category, setCategory] = useState('')
+  const [dish, setDish] = useState('')
+  const [price, setPrice] = useState('')
+
+  useEffect(() => {
+    console.log(dropDownId)
+  }, [dropDownId])
+
+  const handleUploadCategory = () => {
+    if (!category) return
+    dispatch(
+      addNewRecipe({
+        ingredients: [],
+        sectionName: category,
+        variants: [],
+        id: new Date().valueOf(),
+      })
+    )
+    setCategory('')
+    setRecipes(undefined)
+  }
+
+  const handleDishInputChange = () => {
+    if (!dish) return
+    if (!dropDownId) return
+    if (!price) return
+    dispatch(
+      addVariant({
+        id: dropDownId,
+        variantName: dish,
+        price: Number(price),
+      })
+    )
+    setDish('')
+    setPrice('')
+  }
+
   return (
     <aside className={styles.aside}>
       <form>
@@ -112,9 +163,23 @@ const MenuPanel = () => {
           <Text fontWeight='semibold' fontSize='2xl' alignSelf='start'>
             Añadir categoría
           </Text>
-          <FormControl id='email' autoComplete='off'>
+          <FormControl id='email' autoComplete='off' isRequired>
             <FormLabel fontWeight='normal'>Categoría</FormLabel>
-            <Input type='text' backgroundColor='#4E4342' />
+            <Flex gridGap={4}>
+              <Input
+                type='text'
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                backgroundColor='#4E4342'
+              />{' '}
+              <Button
+                colorScheme='brand'
+                color='white'
+                onClick={handleUploadCategory}
+              >
+                Aceptar
+              </Button>
+            </Flex>
           </FormControl>
           <Text
             fontWeight='semibold'
@@ -129,26 +194,63 @@ const MenuPanel = () => {
               bg='white'
               borderColor='white'
               color='black'
-              placeholder='Platillos'
               mb={5}
+              fontSize='lg'
+              isRequired
+              title={'selector'}
+              onClick={(e: any) => {
+                setDropDownId(e.target.value)
+              }}
             >
-              <option value='option1'>Option 1</option>
-              <option value='option2'>Option 2</option>
-              <option value='option3'>Option 3</option>
+              {recipes &&
+                recipes.map(
+                  (
+                    currRecipe: { sectionName: string; id: string },
+                    idx: number
+                  ) => {
+                    return (
+                      <option
+                        value={currRecipe.id}
+                        key={currRecipe.id} 
+                      >
+                        {currRecipe.sectionName}
+                      </option>
+                    )
+                  }
+                )}
             </Select>
           </LightMode>
-          <FormControl id='email'>
-            <FormLabel>Platillo</FormLabel>
-            <Input type='text' backgroundColor='#4E4342' />
-            <FormHelperText>Mayor a 8 caracteres.</FormHelperText>
-          </FormControl>
+          <Flex gridGap={4}>
+            <FormControl id='email'>
+              <FormLabel>Platillo</FormLabel>
+              <Input
+                type='text'
+                value={dish}
+                onChange={(e) => setDish(e.target.value)}
+                backgroundColor='#4E4342'
+              />
+            </FormControl>
+            <FormControl id='email'>
+              <FormLabel>Precio</FormLabel>
+              <Input
+                type='text'
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                backgroundColor='#4E4342'
+              />
+            </FormControl>
+          </Flex>
           <Grid
             templateColumns={'repeat(auto-fit, minmax(175px, 1fr))'}
             gap='1em'
             alignItems='center'
             w='100%'
           >
-            <Button type='submit' colorScheme='brand' color='white'>
+            <Button
+              onClick={handleDishInputChange}
+              colorScheme='brand'
+              color='white'
+            >
               Aceptar
             </Button>
           </Grid>

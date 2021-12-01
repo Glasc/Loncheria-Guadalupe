@@ -16,7 +16,13 @@ export const useOrder = ({ uid }: useOrderProps) => {
   const [allOrders, setAllOrders] = useState<any>('')
   const address = useAppSelector(selectUserAddress)
 
-  const setOrder = async ({ cartItems, total }: { cartItems: any, total: number }) => {
+  const setOrder = async ({
+    cartItems,
+    total,
+  }: {
+    cartItems: any
+    total: number
+  }) => {
     if (!uid) return
     const docRef = doc(db, 'users', uid)
     const docValue = await getDoc(docRef)
@@ -60,23 +66,18 @@ export const useOrder = ({ uid }: useOrderProps) => {
     setIsLoading(false)
   }
 
-  // useEffect(() => {
-  //   ;(async () => {
-  //     if (!uid) return
-  //     const docRef = doc(db, 'users', uid)
-  //     const value = await (await getDoc(docRef)).data()!.orders
-  //     setAllOrders(value)
-  //   })()
-  // }, [uid])
-
   useEffect(() => {
     setIsLoading(true)
     const getAllOrders = async () => {
-      if (!uid) return
-      const docRef = doc(db, 'users', uid)
-      const docValue = await getDoc(docRef)
-      const docData = docValue.data()!.orders
-      setAllOrders(docData)
+      try {
+        if (!uid) return
+        const docRef = doc(db, 'users', uid)
+        const docValue = await getDoc(docRef)
+        const docData = docValue.data()!.orders
+        if (docData !== 'undefined') {
+          setAllOrders(docData)
+        }
+      } catch {}
     }
 
     setIsLoading(false)

@@ -55,10 +55,14 @@ import { useCart } from '../hooks/useCart'
 interface OrdenarProps {}
 
 const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
-  ({ recipes, initialSelection }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  ({
+    recipes,
+    initialSelection,
+  }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const dispatch = useAppDispatch()
 
-    const [currSelection, setCurrSelection] = useState<string>(initialSelection)
+    const [currSelection, setCurrSelection] =
+      useState<string>(initialSelection)
     const [ingredients, setIngredients] = useState([])
     const [variants, setVariants] = useState([])
     const UID: any = useAppSelector(selectUID)
@@ -86,6 +90,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
 
     useEffect(() => {
       ;(async () => {
+        if(!cartItems) return
         if (cartItems.length > 0) {
           const itemm: any = cartItems.filter(
             (currItem: any, idx: number) => {
@@ -367,7 +372,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
                         </p>
                       )}
                       <p className={styles.descriptionDetails}>
-                        {ingredients.map(
+                        {ingredients && ingredients.map(
                           (currIngredient: string, idx: number) => {
                             if (idx === ingredients.length - 1) {
                               return (

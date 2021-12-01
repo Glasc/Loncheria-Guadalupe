@@ -1,18 +1,11 @@
 @import './variables.scss';
 
-.container {
-  min-height: 100vh;
-  width: min(100%, 1000px);
-  padding: 1.5em;
-  padding-bottom: 0;
-  background-color: $secondary-color;
-  color: $quaternary-color;
-}
-
 .main {
+  margin-top: 6em;
   display: grid;
   gap: 2em;
-}
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+} 
 
 .aside {
 }
@@ -21,7 +14,6 @@
   background-color: $background-color;
   border-radius: 11px;
   padding: 2em 2em;
-  margin-top: 6em;
 }
 
 .headline {
@@ -42,7 +34,6 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   margin-top: 1em;
-
 }
 
 .section {
@@ -62,10 +53,10 @@
   font-size: 1.2375rem;
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 2fr 1.3fr 1fr;
   color: $tertiary-color;
   gap: 0.5em;
-
+  height: 45px;
   .price {
     text-align: center;
   }

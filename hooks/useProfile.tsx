@@ -30,7 +30,6 @@ export const useProfile = ({ uid }: useProfileProps) => {
     name,
     telephoneNumber,
   }: saveProfileProps) => {
-    setIsLoading(true)
     if (!uid) return setIsLoading(false)
     const docRef = doc(db, 'users', uid)
     await updateDoc(docRef, {
@@ -42,18 +41,19 @@ export const useProfile = ({ uid }: useProfileProps) => {
         },
       },
     })
-    setIsLoading(false)
   }
 
   const getInitialInputs = async () => {
-    setIsLoading(true)
-    if (!uid) return setIsLoading(false)
-    const docRef = doc(db, 'users', uid)
-    const docValue = await getDoc(docRef)
-    const inputs: saveProfileProps = await docValue.data()!.userInfo.data
-    setInitialInputs(inputs)
-    setIsLoading(false)
-    return initialInputs
+    try {
+      if (!uid) return setIsLoading(false)
+      const docRef = doc(db, 'users', uid)
+      const docValue = await getDoc(docRef)
+      const inputs: saveProfileProps = await docValue.data()!.userInfo.data
+      setInitialInputs(inputs)
+      return initialInputs
+    } catch {
+      console.log('failed retrieving the data from profile')
+    }
   }
 
   return { saveProfile, getInitialInputs, initialInputs, isLoading }

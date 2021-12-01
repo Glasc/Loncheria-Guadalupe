@@ -18,6 +18,8 @@ import { Grid, VStack } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Button } from '@chakra-ui/button'
 import { createUserWithEmailAndPassword, getAuth } from '@firebase/auth'
+import { doc, getDoc, updateDoc, setDoc, collection } from '@firebase/firestore'
+import db from '../../../firebase/firebaseConfig'
 
 interface ModalRegisterProps {}
 
@@ -28,21 +30,48 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [name, setName] = useState<string>('')
+  const [address, setAddress] = useState<string>('')
+  const [phoneNumber, setPhoneNumber] = useState<string>('')
 
   const handleEmail = (e: any) => setEmail(e.target.value)
   const handlePassword = (e: any) => setPassword(e.target.value)
   const handleName = (e: any) => setName(e.target.value)
+  const handleAddress = (e: any) => setAddress(e.target.value)
+  const handlePhoneNumber = (e: any) => setPhoneNumber(e.target.value)
 
   const auth = getAuth()
+
+  const initialDatabaseValues = async ({ uid, formValues }: any) => {
+    const usersRef = collection(db, 'users')
+    await setDoc(doc(usersRef, uid), {})
+
+    const docRef = doc(db, 'users', uid)
+    await updateDoc(docRef, {
+      carrito: [],
+      orders: {
+        byId: {},
+        allIds: []
+      },
+      pedidos: [],
+      userInfo: {
+        data: {
+          address: formValues.address,
+          name: formValues.name,
+          telephoneNumber: formValues.phoneNumber,
+        },
+      },
+    })
+  }
 
   const handleRegister = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
         console.log('Registered user: ', user)
-        setEmail('')
-        setPassword('')
-        setName('')
+        initialDatabaseValues({
+          uid: user.uid,
+          formValues: { name, address, phoneNumber },
+        })
       })
       .catch((error) => {
         const errorCode = error.code
@@ -99,19 +128,34 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
                   <Input type='text' value={name} onChange={handleName} />
                   <FormHelperText></FormHelperText>
                 </FormControl>
+                <FormControl id='phone'>
+                  <FormLabel>Teléfono</FormLabel>
+                  <Input
+                    type='text'
+                    value={phoneNumber}
+                    onChange={handlePhoneNumber}
+                  />
+                  <FormHelperText></FormHelperText>
+                </FormControl>
+                <FormControl id='address'>
+                  <FormLabel>Dirección</FormLabel>
+                  <Input
+                    type='text'
+                    value={address}
+                    onChange={handleAddress}
+                  />
+                  <FormHelperText></FormHelperText>
+                </FormControl>
                 <Grid
                   templateColumns={'repeat(auto-fit, minmax(175px, 1fr))'}
                   gap='1em'
                   alignItems='center'
                   w='100%'
                 >
-                  <Button
-                    colorScheme='teal'
-                    onClick={handleRegister}
-                  >
+                  <Button colorScheme='teal' onClick={handleRegister}>
                     Registrase
                   </Button>
-                  <Button
+                  {/* <Button
                     color='white'
                     variant='solid'
                     size='md'
@@ -119,7 +163,7 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
                     width='100%'
                   >
                     Continuar con Google
-                  </Button>
+                  </Button> */}
                 </Grid>
               </VStack>
             </form>

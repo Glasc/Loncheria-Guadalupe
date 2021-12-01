@@ -17,6 +17,7 @@ import {
 import db from '../firebase/firebaseConfig'
 import { ProductTypes } from '../shared/types'
 import type { RootState } from './store'
+import { setDoc } from '@firebase/firestore'
 
 export const addNewRecipe = createAsyncThunk(
   'recipe/addRecipe',
@@ -25,10 +26,12 @@ export const addNewRecipe = createAsyncThunk(
   //   return response.data
   // }
   async (payload: ProductTypes, thunkAPI) => {
-    const docRef = await addDoc(collection(db, `recipes`), {
+    const id = new Date().valueOf().toString()
+
+    await setDoc(doc(db, 'recipes', id), {
       ...payload,
+      id
     })
-    return docRef
   }
 )
 
@@ -63,7 +66,7 @@ export const addVariant = createAsyncThunk(
 
     const data: [] = res.data()!.variants
 
-    return await updateDoc(docRef, {
+    await updateDoc(docRef, {
       variants: [
         ...data,
         { name: payload.variantName, price: payload.price },
@@ -191,7 +194,6 @@ export const recipeSlice = createSlice({
     builder.addCase(getRecipes.rejected, (state, action) => {
       // Add user to the state array
       const docs: any = action.payload
-
     })
   },
 })

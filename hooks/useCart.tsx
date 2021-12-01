@@ -20,11 +20,16 @@ export const useCart = ({ uid }: useCartProps) => {
   useEffect(() => {
     setIsLoading(true)
     const getAllCartItems = async () => {
-      if (!uid) return
-      const docRef = doc(db, 'users', uid)
-      const docValue = await getDoc(docRef)
-      const docData = docValue.data()!.carrito
-      setCartItems(docData)
+      try {
+        if (!uid) return
+        const docRef = doc(db, 'users', uid)
+        const docValue = await getDoc(docRef)
+        const docData = docValue.data()!.carrito
+        setCartItems(docData)
+        
+      } catch {
+        console.log('failed retrieving the data from cart.')
+      }
     }
 
     setIsLoading(false)
