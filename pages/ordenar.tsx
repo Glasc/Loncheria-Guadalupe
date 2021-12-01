@@ -108,7 +108,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
           (currRecipe: any) => currRecipe.sectionName === currSelection
         ).ingredients
       )
-    }, [currSelection])
+    }, [currSelection, recipes])
 
     useEffect(() => {
       if (!currSelection) return
@@ -120,7 +120,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
           return currVariant.name
         })
       setVariants(variantTemp)
-    }, [currSelection])
+    }, [currSelection, recipes])
 
     // const [cartItems, setCartItems] = useState([])
 
