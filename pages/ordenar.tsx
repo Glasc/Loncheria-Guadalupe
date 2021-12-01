@@ -55,20 +55,17 @@ import { useCart } from '../hooks/useCart'
 interface OrdenarProps {}
 
 const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
-  ({ recipes }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  ({ recipes, initialSelection }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const dispatch = useAppDispatch()
 
-    const [currSelection, setCurrSelection] = useState<string>('')
+    const [currSelection, setCurrSelection] = useState<string>(initialSelection)
     const [ingredients, setIngredients] = useState([])
     const [variants, setVariants] = useState([])
     const UID: any = useAppSelector(selectUID)
     const cartItems: CartItems | [] = useAppSelector(selectCartItems)
     const [quantityValue, setQuantityValue] = useState<number>(1)
-
     const [sectionValue, setSectionValue] = useState<string>('')
-
     const total = useAppSelector(selectCartTotal)
-
     const { setOrder, isLoading } = useOrder({ uid: UID })
     const { cartItemList }: any = useCart({ uid: UID })
     const { initialInputs, getInitialInputs } = useProfile({ uid: UID })
@@ -98,8 +95,8 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
             }
           )
           await dispatch(getCartTotal({ uid: UID }))
-          setCurrSelection(cartItemList[0].sectionName)
-          
+          // TODO:
+          // setCurrSelection(cartItemList[0].sectionName)
         }
       })()
     }, [cartItems, dispatch, UID])
@@ -396,7 +393,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
               size='lg'
               w='100%'
               onClick={async () => {
-                await setOrder({ cartItems })
+                await setOrder({ cartItems, total })
                 await dispatch(getCartItems({ uid: UID }))
                 await dispatch(getCartTotal({ uid: UID }))
               }}
@@ -422,85 +419,23 @@ export const getStaticProps: GetStaticProps = async () => {
     recipes.push({ sectionName, variants, ingredients, id: doc.id })
   })
 
-  // console.log(
-  //   recipes.find((currRecipe) => currRecipe.sectionName === 'Quesadilla')
-  //     .ingredients
-  // )
-
-  // INGREDIENTS
-
-  const getIngredients = (sectionName: any) => {
-    docs.forEach((doc) => {
-      ingredients = [...ingredients, doc.data()]
-    })
-
-    return (ingredients = ingredients.find(
-      (currVariant: any) => currVariant.sectionName === sectionName
-    ).ingredients)
-  }
-
-  // VARIANTS
-
-  const getVariants = (sectionName: any) => {
-    docs.forEach((doc) => {
-      variants = [...variants, doc.data()]
-    })
-
-    variants = variants.find(
-      (currVariant: any) => currVariant.sectionName === sectionName
-    ).variants
-
-    return (variants = variants.map((currVariant: any) => {
-      return currVariant.name
-    }))
-  }
-
-  // console.log(
-  //   recipes.find((currRecipe) => currRecipe.sectionName === 'Quesadilla')
-  //     .variants.map((currVariant: any) => {
-  //     return currVariant.name
-  //   })
-  // )
-
   if (recipes.length < 1) return { notFound: true }
+
+  const collectionRef = collection(db, 'recipes')
+  const collectionDocs = await getDocs(collectionRef)
+  const [first] = collectionDocs.docs
+
+  const initialSelection = first.data().sectionName
+
+  if (!initialSelection) return { notFound: true }
 
   return {
     props: {
       recipes,
+      initialSelection,
     },
-    revalidate: 5,
+    revalidate: 3,
   }
 }
 
 export default Ordenar
-
-// useEffect(() => {
-//   const auth = getAuth()
-//   const user = auth.currentUser
-
-//   if (user) {
-//     console.log(user.uid)
-//     ;(async () => {
-//       await setDoc(doc(db, 'users', user.uid), {
-//         pedidos: [
-//           {
-//             estado: 'Confirmado',
-//             direccion: 'Emiliano Zapata #741',
-//             fecha: '27/11/2021 08:12PM',
-//             total: '277',
-//             productosPedidos: [
-//               {
-//                 producto: '2 Quesadillas sincronizadas',
-//                 descripcion: 'Con todo',
-//               },
-//               {
-//                 producto: '2 Tortas de pierna',
-//                 descripcion: 'Con todo',
-//               },
-//             ],
-//           },
-//         ],
-//       })
-//     })()
-//   }
-// }, [dispatch])

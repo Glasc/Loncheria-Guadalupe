@@ -35,6 +35,7 @@ const Home: NextPage = (props) => {
     })
   }, [dispatch, router])
 
+
   if (showMain) {
     return (
       <Layout>

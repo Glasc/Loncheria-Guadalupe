@@ -13,10 +13,16 @@ import { getAuth } from 'firebase/auth'
 import { setDoc, doc, getDoc, addDoc } from '@firebase/firestore'
 import db from '../firebase/firebaseConfig'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
-import { getOrders, selectUID, setUserID } from '../redux/authSlice'
+import {
+  getOrders,
+  selectUID,
+  setUserID,
+  getCartTotal,
+} from '../redux/authSlice'
 import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
 import { useOrder } from '../hooks/useOrder'
+import { useCart } from '../hooks/useCart'
 
 interface PedidosProps {}
 
@@ -24,14 +30,8 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
   const dispatch = useAppDispatch()
 
   const uid: string = useAppSelector(selectUID) || ''
-
   const { allOrders } = useOrder({ uid })
-
-  const {date, state, orderList} = allOrders
-
-  useEffect(() => {
-    console.log(allOrders)
-  }, [allOrders])
+  const { allIds, byId } = allOrders
 
   useEffect(() => {
     onAuthStateChanged(
@@ -49,42 +49,31 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
         </Button>
       </div>
       <div className={styles.cardsContent}>
-        <div className={styles.card}>
-          <div className={styles.logo}>
-            <CheckCircleIcon w={10} h={10} />
-          </div>
-          <div className={styles.cardAside}>
-            <div className={styles.description}>
-              <h2>Confirmado</h2>
-              <p>Emiliano Zapata #734</p>
-              <p>16/11/2021 08:22 PM</p>
-            </div>
-            <div className={styles.cardButtonWrapper}>
-              <Button colorScheme='orange'>Editar</Button>
-              <Button colorScheme='red' variant='outline'>
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className={styles.card}>
-          <div className={styles.logo}>
-            <CheckCircleIcon w={10} h={10} />
-          </div>
-          <div className={styles.cardAside}>
-            <div className={styles.description}>
-              <h2>Confirmado</h2>
-              <p>Emiliano Zapata #734</p>
-              <p>16/11/2021 08:22 PM</p>
-            </div>
-            <div className={styles.cardButtonWrapper}>
-              <Button colorScheme='orange'>Editar</Button>
-              <Button colorScheme='red' variant='outline'>
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </div>
+        {allIds &&
+          allIds.map((currId: any) => {
+            const { address, date, total, state } = byId[currId]
+            return (
+              <div key={currId} className={styles.card}>
+                <div className={styles.logo}>
+                  <CheckCircleIcon w={10} h={10} />
+                </div>
+                <div className={styles.cardAside}>
+                  <div className={styles.description}>
+                    <h2>{state}</h2>
+                    <p>{address}</p>
+                    <p>{date}</p>
+                    <p>Total: ${total}.00 MXN</p>
+                  </div>
+                  <div className={styles.cardButtonWrapper}>
+                    <Button colorScheme='red' variant='outline'>
+                      Cancelar
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+
         <div className={styles.card}>
           <div className={styles.logo}>
             <CheckCircleIcon w={10} h={10} />

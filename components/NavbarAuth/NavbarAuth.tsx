@@ -4,9 +4,7 @@ import Link from 'next/link'
 import { animated, useSpring } from 'react-spring'
 import { HamburgerIcon } from '@chakra-ui/icons'
 
-interface NavbarAuthProps {
-  
-}
+interface NavbarAuthProps {}
 
 export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
   const [toggleHamburguerIcon, setToggleHamburguerIcon] =
@@ -22,7 +20,7 @@ export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
   return (
     <nav className={styles.navbar}>
       <h2 className={styles.navbarLogo}>
-        <Link href="/pedidos">Lorem Ipsum</Link>
+        <Link href='/pedidos'>Lorem Ipsum</Link>
       </h2>
       <ul className={styles.navbarList}>
         <li>

@@ -192,10 +192,6 @@ export const recipeSlice = createSlice({
       // Add user to the state array
       const docs: any = action.payload
 
-      docs.forEach((doc: any) => {
-        const { sectionName, variants, ingredients } = doc.data()
-        
-      })
     })
   },
 })

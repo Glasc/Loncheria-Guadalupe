@@ -1,4 +1,9 @@
-import { NextPage, InferGetStaticPropsType, GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import {
+  NextPage,
+  InferGetStaticPropsType,
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+} from 'next'
 import { Navbar } from '../components/Navbar/Navbar'
 import styles from '../styles/Menu.module.scss'
 import { Layout } from '../components/Layout'
@@ -14,7 +19,9 @@ import {
 } from '@firebase/firestore'
 
 import { GetStaticProps } from 'next'
-import { useAppDispatch } from '../redux/hooks'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { selectUID } from '../redux/authSlice'
+import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import {
   addNewRecipe,
   deleteRecipe,
@@ -36,17 +43,17 @@ const recipeList = [
 ]
 
 const Menu: NextPage = ({
-  recipes: recipeList,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+      recipes: recipeList,
+    }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [isEditing, setIsEditing] = useState()
-
   const dispatch = useAppDispatch()
+  const uid: string = useAppSelector(selectUID)
 
   useEffect(() => {}, [])
 
   return (
     <Layout>
-      <Navbar />
+      {uid ? <NavbarAuth /> : <Navbar />}
       <div className={styles.menuContent}>
         <h2 className={styles.headline}>Menú</h2>
         {recipeList.map((currRecipe: any, idx: any) => {

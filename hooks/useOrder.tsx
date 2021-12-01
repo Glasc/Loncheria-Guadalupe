@@ -16,28 +16,42 @@ export const useOrder = ({ uid }: useOrderProps) => {
   const [allOrders, setAllOrders] = useState<any>('')
   const address = useAppSelector(selectUserAddress)
 
-  const setOrder = async ({ cartItems }: { cartItems: CartItems[] }) => {
+  const setOrder = async ({ cartItems, total }: { cartItems: any, total: number }) => {
     if (!uid) return
-
     const docRef = doc(db, 'users', uid)
+    const docValue = await getDoc(docRef)
+    const docPrevData = await docValue.data()!.orders
 
-    const orderList = {
-      [new Date().valueOf()]: {
+    const id = new Date().valueOf()
+    const orderList: any = {
+      [id]: {
         orderList: [...cartItems],
         address,
         date: formatRelative(subDays(new Date(), 0), new Date(), {
           locale: es,
         }),
+        id,
+        total,
         state: 'Espera de confirmar',
       },
     }
 
-    await updateDoc(docRef, {
-      orders: {
-        byId: orderList,
-        allIds: [orderList],
-      },
-    })
+    if (docPrevData.allIds) {
+      await updateDoc(docRef, {
+        orders: {
+          byId: { ...docPrevData.byId, ...orderList },
+          allIds: [...Object.keys(orderList), ...docPrevData.allIds],
+        },
+      })
+    } else {
+      await updateDoc(docRef, {
+        orders: {
+          byId: { ...docPrevData.byId, ...orderList },
+          allIds: [...Object.keys(orderList)],
+        },
+      })
+    }
+
     // clean cart
     await updateDoc(docRef, {
       carrito: [],
@@ -46,13 +60,22 @@ export const useOrder = ({ uid }: useOrderProps) => {
     setIsLoading(false)
   }
 
+  // useEffect(() => {
+  //   ;(async () => {
+  //     if (!uid) return
+  //     const docRef = doc(db, 'users', uid)
+  //     const value = await (await getDoc(docRef)).data()!.orders
+  //     setAllOrders(value)
+  //   })()
+  // }, [uid])
+
   useEffect(() => {
     setIsLoading(true)
     const getAllOrders = async () => {
       if (!uid) return
       const docRef = doc(db, 'users', uid)
       const docValue = await getDoc(docRef)
-      const docData = docValue.data()!.orders!.allIds
+      const docData = docValue.data()!.orders
       setAllOrders(docData)
     }
 

@@ -50,7 +50,7 @@ export const getCartTotal = createAsyncThunk(
 
 interface CounterStateProps {
   value: any
-  uid: string | null
+  uid: string
   orders: []
   cartItems: []
   cartTotal: number
@@ -59,7 +59,7 @@ interface CounterStateProps {
 
 const initialState: CounterStateProps = {
   value: '',
-  uid: null,
+  uid: '',
   orders: [],
   cartItems: [],
   cartTotal: 0,
