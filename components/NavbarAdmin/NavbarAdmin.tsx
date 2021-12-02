@@ -3,10 +3,12 @@ import styles from './NavbarAdmin.module.scss'
 import Link from 'next/link'
 import { animated, useSpring } from 'react-spring'
 import { HamburgerIcon } from '@chakra-ui/icons'
+import { getAuth, signOut } from 'firebase/auth'
+import { useRouter } from 'next/router'
 
 interface NavbarAdminProps {}
 
-export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {  
+export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
   const [toggleHamburguerIcon, setToggleHamburguerIcon] =
     useState<boolean>(false)
 
@@ -16,6 +18,21 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
     from: { opacity: 1 },
     reverse: flip,
   })
+
+  const router = useRouter()
+
+  const handleLogOut = () => {
+    const auth = getAuth()
+    signOut(auth)
+      .then(() => {
+        console.log('Success')
+        router.push('/')
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log('oops')
+      })
+  }
 
   return (
     <nav className={styles.navbar}>
@@ -35,6 +52,9 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
         <li>
           <Link href='/menu'>Control</Link>
         </li>
+        <li style={{ cursor: 'pointer' }}>
+          <a onClick={handleLogOut}>Salir</a>
+        </li>
       </ul>
       {toggleHamburguerIcon && (
         <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
@@ -50,6 +70,9 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
             </li>
             <li>
               <Link href='/menu'>Control</Link>
+            </li>
+            <li style={{ cursor: 'pointer' }}>
+              <a onClick={handleLogOut}>Salir</a>
             </li>
           </ul>
         </animated.h1>
