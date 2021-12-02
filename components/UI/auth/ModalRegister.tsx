@@ -100,7 +100,7 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
       >
         <ModalOverlay />
         <ModalContent color='white' bg='#342C2B'>
-          <ModalHeader>Iniciar sesión</ModalHeader>
+          <ModalHeader>Registrarse</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form>

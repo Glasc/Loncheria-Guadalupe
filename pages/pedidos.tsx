@@ -32,8 +32,8 @@ import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
 import { useOrder } from '../hooks/useOrder'
 import { useCart } from '../hooks/useCart'
-import { useAdmin } from '../hooks/useAdmin';
-import { useRouter } from 'next/router';
+import { useAdmin } from '../hooks/useAdmin'
+import { useRouter } from 'next/router'
 
 interface PedidosProps {}
 
@@ -42,8 +42,8 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
 
   const uid: string = useAppSelector(selectUID) || ''
   const { allOrders, updateOrders } = useOrder({ uid })
-  const { allIds, byId } = allOrders
-  const { isAdmin } = useAdmin({uid})
+  const { allIds, byId } = allOrders || []
+  const { isAdmin } = useAdmin({ uid })
   const router = useRouter()
 
   useEffect(() => {
@@ -94,7 +94,6 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
     updateOrders()
   }
 
-
   return (
     <Layout>
       <NavbarAuth />
@@ -108,7 +107,6 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
           allIds.map((currId: any) => {
             const { address, date, total, state, orderList, id } =
               byId[currId]
-            
             return (
               <div key={currId} className={styles.card}>
                 <div className={styles.logo}>
@@ -144,25 +142,6 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
               </div>
             )
           })}
-
-        <div className={styles.card}>
-          <div className={styles.logo}>
-            <CheckCircleIcon w={10} h={10} />
-          </div>
-          <div className={styles.cardAside}>
-            <div className={styles.description}>
-              <h2>Confirmado</h2>
-              <p>Emiliano Zapata #734</p>
-              <p>16/11/2021 08:22 PM</p>
-            </div>
-            <div className={styles.cardButtonWrapper}>
-              <Button colorScheme='orange'>Editar</Button>
-              <Button colorScheme='red' variant='outline'>
-                Cancelar
-              </Button>
-            </div>
-          </div>
-        </div>
       </div>
     </Layout>
   )
