@@ -7,6 +7,7 @@ import {
 } from '@firebase/firestore'
 import { useEffect, useState } from 'react'
 import db from '../firebase/firebaseConfig'
+import { setMenuAdminSelectionId } from '../redux/recipeSlice'
 import { ProductTypes } from '../shared/types'
 
 interface useMenuModifierProps {
@@ -46,10 +47,10 @@ export const useMenuModifier = () => {
       const initialSelection = first.data().sectionName
       console.log(first.data().id)
       setDropDownId(first.data().id)
+      setMenuAdminSelectionId(dropDownId)
       setInitialDropdownValue(initialSelection)
     })()
-  }, [initialDropdownValue])
-
+  }, [initialDropdownValue, dropDownId])
 
   return {
     initialDropdownValue,

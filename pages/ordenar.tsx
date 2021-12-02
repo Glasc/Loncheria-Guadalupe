@@ -40,25 +40,16 @@ import { AddIcon, MinusIcon } from '@chakra-ui/icons'
 import { useOrder } from '../hooks/useOrder'
 import { useProfile } from '../hooks/useProfile'
 import { useCart } from '../hooks/useCart'
-
-// addCartItem({
-//   newCartItem: {
-//     ingredients: ['Lechuga, Jitomate'],
-//     sectionName: 'Tortas',
-//     variantName: 'Panela',
-//     quantity: 3,
-//     id: new Date().valueOf(),
-//   },
-//   uid: UID,
-// })
+import { useAdmin } from '../hooks/useAdmin'
+import { useRouter } from 'next/router'
 
 interface OrdenarProps {}
 
 const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
   ({
-    recipes,
-    initialSelection,
-  }: InferGetStaticPropsType<typeof getStaticProps>) => {
+        recipes,
+        initialSelection,
+      }: InferGetStaticPropsType<typeof getStaticProps>) => {
     const dispatch = useAppDispatch()
 
     const [currSelection, setCurrSelection] =
@@ -88,9 +79,17 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
       getInitialInputs()
     }, [dispatch, getInitialInputs, initialInputs])
 
+    const { isAdmin } = useAdmin({ uid: UID })
+    const router = useRouter()
+
+    useEffect(() => {
+      if (!isAdmin) return
+      router.push('/admin/menuAdmin')
+    }, [isAdmin, router])
+
     useEffect(() => {
       ;(async () => {
-        if(!cartItems) return
+        if (!cartItems) return
         if (cartItems.length > 0) {
           const itemm: any = cartItems.filter(
             (currItem: any, idx: number) => {
@@ -372,18 +371,19 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
                         </p>
                       )}
                       <p className={styles.descriptionDetails}>
-                        {ingredients && ingredients.map(
-                          (currIngredient: string, idx: number) => {
-                            if (idx === ingredients.length - 1) {
+                        {ingredients &&
+                          ingredients.map(
+                            (currIngredient: string, idx: number) => {
+                              if (idx === ingredients.length - 1) {
+                                return (
+                                  <span key={idx}>{currIngredient}</span>
+                                )
+                              }
                               return (
-                                <span key={idx}>{currIngredient}</span>
+                                <span key={idx}>{currIngredient}, </span>
                               )
                             }
-                            return (
-                              <span key={idx}>{currIngredient}, </span>
-                            )
-                          }
-                        )}
+                          )}
                       </p>
                     </div>
                   )

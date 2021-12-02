@@ -10,7 +10,15 @@ import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import { Button } from '@chakra-ui/button'
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { getAuth } from 'firebase/auth'
-import { setDoc, doc, getDoc, addDoc } from '@firebase/firestore'
+import {
+  setDoc,
+  doc,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  deleteField,
+} from '@firebase/firestore'
 import db from '../firebase/firebaseConfig'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import {
@@ -24,6 +32,8 @@ import { onAuthStateChanged } from '@firebase/auth'
 import { auth } from '../firebase/firebaseConfig'
 import { useOrder } from '../hooks/useOrder'
 import { useCart } from '../hooks/useCart'
+import { useAdmin } from '../hooks/useAdmin';
+import { useRouter } from 'next/router';
 
 interface PedidosProps {}
 
@@ -31,24 +41,59 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
   const dispatch = useAppDispatch()
 
   const uid: string = useAppSelector(selectUID) || ''
-  const { allOrders } = useOrder({ uid })
+  const { allOrders, updateOrders } = useOrder({ uid })
   const { allIds, byId } = allOrders
+  const { isAdmin } = useAdmin({uid})
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isAdmin) return
+    router.push('/admin/menuAdmin')
+  }, [isAdmin, router])
 
   useEffect(() => {
     // onAuthStateChanged(
     //   auth,
     //   (user) => user && dispatch(setUserID(user.uid))
-    // )  
-     onAuthStateChanged(auth, (user) => {
-       if (user) {
-         dispatch(saveUser(user.refreshToken))
-         dispatch(setUserID(user.uid))
-       } else {
-         dispatch(saveUser(undefined))
-         dispatch(setUserID(null))
-       }
-     })
+    // )
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user.refreshToken))
+        dispatch(setUserID(user.uid))
+      } else {
+        dispatch(saveUser(undefined))
+        dispatch(setUserID(null))
+      }
+    })
   }, [dispatch])
+
+  const handleCancel = async ({
+    id,
+    state,
+  }: {
+    id: number
+    state: string
+  }) => {
+    if (state !== 'Espera de confirmar') return
+    const docRef = doc(db, 'users', uid)
+    const docValue = await getDoc(docRef)
+    const docPrevData = await docValue.data()!.orders
+    const byId = `orders.byId.${id}`
+
+    await updateDoc(docRef, {
+      [byId]: deleteField(),
+    })
+    await updateDoc(docRef, {
+      [`orders.allIds`]: docPrevData.allIds.filter((curr: any) => {
+        if (curr.toString() === id.toString()) {
+          return false
+        }
+        return true
+      }),
+    })
+    updateOrders()
+  }
+
 
   return (
     <Layout>
@@ -61,7 +106,9 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
       <div className={styles.cardsContent}>
         {allIds &&
           allIds.map((currId: any) => {
-            const { address, date, total, state } = byId[currId]
+            const { address, date, total, state, orderList, id } =
+              byId[currId]
+            
             return (
               <div key={currId} className={styles.card}>
                 <div className={styles.logo}>
@@ -70,12 +117,26 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
                 <div className={styles.cardAside}>
                   <div className={styles.description}>
                     <h2>{state}</h2>
-                    <p>{address}</p>
                     <p>{date}</p>
+                    <p>
+                      {orderList &&
+                        orderList.map((currOrder: any, idx: number) => {
+                          const { sectionName, variantName } = currOrder
+                          console.log(idx, orderList.length - 1)
+                          if (idx === orderList.length - 1)
+                            return `${sectionName} ${variantName}.`
+                          return `${sectionName} ${variantName}, `
+                        })}
+                    </p>
+                    <p>{address}</p>
                     <p>Total: ${total}.00 MXN</p>
                   </div>
                   <div className={styles.cardButtonWrapper}>
-                    <Button colorScheme='red' variant='outline'>
+                    <Button
+                      colorScheme='red'
+                      variant='outline'
+                      onClick={() => handleCancel({ id, state })}
+                    >
                       Cancelar
                     </Button>
                   </div>
@@ -108,35 +169,3 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
 }
 
 export default Pedidos
-
-// useEffect(() => {
-//   const auth = getAuth()
-//   const user = auth.currentUser
-
-//   if (user) {
-//     console.log(user.uid)
-//     ;(async () => {
-//       await setDoc(doc(db, 'users', user.uid), {
-//         pedidos: [
-//           {
-//             id: new Date().valueOf(),
-//             estado: '',
-//             direccion: '',
-//             fecha: '',
-//             total: '',
-//             productosPedidos: [
-//               {
-//                 producto: '2 Quesadillas sincronizadas',
-//                 descripcion: 'Con todo',
-//               },
-//               {
-//                 producto: '2 Tortas de pierna',
-//                 descripcion: 'Con todo',
-//               },
-//             ],
-//           },
-//         ],
-//       })
-//     })()
-//   }
-// }, [])

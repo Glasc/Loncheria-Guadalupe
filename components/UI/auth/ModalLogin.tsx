@@ -38,7 +38,7 @@ function ModalLogin() {
         w='100%'
         onClick={onOpen}
       >
-        Ordenar en Línea
+        Unirse
       </Button>
       <Modal
         isOpen={isOpen}

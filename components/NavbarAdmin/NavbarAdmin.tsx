@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import styles from './NavbarAuth.module.scss'
+import styles from './NavbarAdmin.module.scss'
 import Link from 'next/link'
 import { animated, useSpring } from 'react-spring'
 import { HamburgerIcon } from '@chakra-ui/icons'
 
-interface NavbarAuthProps {}
+interface NavbarAdminProps {}
 
-export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
+export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {  
   const [toggleHamburguerIcon, setToggleHamburguerIcon] =
     useState<boolean>(false)
 

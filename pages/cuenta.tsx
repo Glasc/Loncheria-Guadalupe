@@ -65,13 +65,15 @@ const Cuenta: NextPage<CuentaProps> = ({}) => {
     <Layout>
       <NavbarAuth />
       <form className={styles.form} onSubmit={handleSubmit}>
-        <Image
-          src='/assets/profile_maininblack.jpg'
-          alt='Cuenta'
-          width={200}
-          height={200}
-          className={styles.profileImage}
-        />
+        <div style={{borderRadius: "15px"}}>
+          <Image
+            src='/assets/profile_example2.png'
+            alt='Cuenta'
+            width={200}
+            height={200}
+            className={styles.profileImage}
+          />
+        </div>
 
         <FormControl id='first-name' isRequired>
           <FormLabel fontSize='larger' fontWeight='regular'>

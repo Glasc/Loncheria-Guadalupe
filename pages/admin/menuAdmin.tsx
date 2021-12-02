@@ -17,14 +17,20 @@ import { Select } from '@chakra-ui/select'
 import { LightMode } from '@chakra-ui/color-mode'
 import { useState } from 'react'
 import { useMenuModifier } from '../../hooks/useMenuModifier'
-import { useAppDispatch } from '../../redux/hooks'
-import { addNewRecipe, addVariant } from '../../redux/recipeSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import {
+  addNewRecipe,
+  addVariant,
+  addIngredient,
+  setMenuAdminSelectionId,
+} from '../../redux/recipeSlice'
+import { NavbarAdmin } from '../../components/NavbarAdmin/NavbarAdmin'
+import { selectMenuAdminSelectionId } from '../../redux/recipeSlice'
+import { doc, getDoc } from '@firebase/firestore'
+import db from '../../firebase/firebaseConfig'
 
 interface MenuAdminProps {}
 
-interface CategoryProps {
-  categoryName: string
-}
 interface ProductProps {
   productName: string
   price: number
@@ -32,15 +38,53 @@ interface ProductProps {
 interface MenuPanelProps {}
 
 const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
+  const currentSectionId: string =
+    useAppSelector(selectMenuAdminSelectionId) || ''
+
+  const [recipes, setRecipes] = useState<any>('')
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      if (!currentSectionId) return
+      const docRef = doc(db, 'recipes', currentSectionId)
+      const docValue = await getDoc(docRef)
+      const docData = await docValue.data()
+      setRecipes(docData)
+    }
+    
+    if (currentSectionId !== '') {
+      getRecipes()
+      console.log(recipes)
+    }
+  }, [currentSectionId, recipes])
+
   return (
     <Layout>
-      <NavbarAuth />
+      <NavbarAdmin />
       <main className={styles.main}>
         <div className={styles.menuContent}>
           <h2 className={styles.headline}>Menú</h2>
           <div className={styles.section}>
-            <Category categoryName='Torta' />
-            <Product productName='Panela' price={19} />
+            {recipes && (
+              <>
+                <Category
+                  categoryName={recipes.sectionName}
+                  id={recipes.name}
+                  key={recipes.name}
+                />
+                {recipes.variants.map((currVariant: any, idx: any) => {
+                  return (
+                    <Product
+                      productName={currVariant.name}
+                      price={currVariant.price}
+                      key={idx}
+                    />
+                  )
+                })}
+              </>
+            )}
+            {/* <Category categoryName='Torta' />
+            <Product productName='Panela' price={19} /> */}
           </div>
         </div>
         <MenuPanel />
@@ -49,10 +93,14 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
   )
 }
 
-const Category: React.FC<CategoryProps> = ({ categoryName }) => {
+const Category = ({ categoryName, id }: any) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const toggleEdit = () => setIsEditing((prev) => !prev)
+
+  const handleEdit = () => {
+    toggleEdit()
+  }
 
   return (
     <div className={styles.categorySection}>
@@ -62,14 +110,14 @@ const Category: React.FC<CategoryProps> = ({ categoryName }) => {
         <h2 style={{}}>{categoryName}</h2>
       )}
       <div className={styles.iconWrapper}>
-        <EditIcon w={5} h={5} cursor='pointer' onClick={toggleEdit} />
+        <EditIcon w={5} h={5} cursor='pointer' onClick={handleEdit} />
         <DeleteIcon w={5} h={5} cursor='pointer' />
       </div>
     </div>
   )
 }
 
-const Product: React.FC<ProductProps> = ({ price, productName }) => {
+const Product = ({ price, productName }: any) => {
   const [isEditing, setIsEditing] = useState<boolean>(false)
 
   const toggleEdit = () => setIsEditing((prev) => !prev)
@@ -84,6 +132,7 @@ const Product: React.FC<ProductProps> = ({ price, productName }) => {
             color='white'
             type='text'
             backgroundColor='#4E4342'
+            border='none'
           />
           <Input
             _placeholder={{ color: 'gray.50' }}
@@ -91,6 +140,7 @@ const Product: React.FC<ProductProps> = ({ price, productName }) => {
             color='white'
             type='text'
             backgroundColor='#4E4342'
+            border='none'
           />
         </>
       ) : (
@@ -122,10 +172,11 @@ const MenuPanel = () => {
   const [category, setCategory] = useState('')
   const [dish, setDish] = useState('')
   const [price, setPrice] = useState('')
+  const [ingredient, setIngredient] = useState('')
 
   useEffect(() => {
-    console.log(dropDownId)
-  }, [dropDownId])
+    dispatch(setMenuAdminSelectionId(dropDownId))
+  }, [dispatch, dropDownId])
 
   const handleUploadCategory = () => {
     if (!category) return
@@ -141,7 +192,7 @@ const MenuPanel = () => {
     setRecipes(undefined)
   }
 
-  const handleDishInputChange = () => {
+  const handleDishUpload = () => {
     if (!dish) return
     if (!dropDownId) return
     if (!price) return
@@ -154,6 +205,17 @@ const MenuPanel = () => {
     )
     setDish('')
     setPrice('')
+  }
+
+  const handleIngredientUpload = () => {
+    if (!dropDownId) return
+    dispatch(
+      addIngredient({
+        ingredientName: ingredient,
+        id: dropDownId,
+      })
+    )
+    setIngredient('')
   }
 
   return (
@@ -171,13 +233,14 @@ const MenuPanel = () => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 backgroundColor='#4E4342'
+                border='none'
               />{' '}
               <Button
                 colorScheme='brand'
                 color='white'
                 onClick={handleUploadCategory}
               >
-                Aceptar
+                Añadir
               </Button>
             </Flex>
           </FormControl>
@@ -200,6 +263,7 @@ const MenuPanel = () => {
               title={'selector'}
               onClick={(e: any) => {
                 setDropDownId(e.target.value)
+                dispatch(setMenuAdminSelectionId(''))
               }}
             >
               {recipes &&
@@ -209,10 +273,7 @@ const MenuPanel = () => {
                     idx: number
                   ) => {
                     return (
-                      <option
-                        value={currRecipe.id}
-                        key={currRecipe.id} 
-                      >
+                      <option value={currRecipe.id} key={currRecipe.id}>
                         {currRecipe.sectionName}
                       </option>
                     )
@@ -228,6 +289,7 @@ const MenuPanel = () => {
                 value={dish}
                 onChange={(e) => setDish(e.target.value)}
                 backgroundColor='#4E4342'
+                border='none'
               />
             </FormControl>
             <FormControl id='email'>
@@ -237,6 +299,7 @@ const MenuPanel = () => {
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 backgroundColor='#4E4342'
+                border='none'
               />
             </FormControl>
           </Flex>
@@ -247,13 +310,35 @@ const MenuPanel = () => {
             w='100%'
           >
             <Button
-              onClick={handleDishInputChange}
+              onClick={handleDishUpload}
               colorScheme='brand'
               color='white'
             >
-              Aceptar
+              Añadir
             </Button>
           </Grid>
+          <Text fontWeight='semibold' fontSize='2xl' alignSelf='start'>
+            Añadir ingrediente
+          </Text>
+          <FormControl id='email' autoComplete='off' isRequired>
+            <FormLabel fontWeight='normal'>Ingrediente</FormLabel>
+            <Flex gridGap={4}>
+              <Input
+                type='text'
+                value={ingredient}
+                onChange={(e) => setIngredient(e.target.value)}
+                backgroundColor='#4E4342'
+                border='none'
+              />{' '}
+              <Button
+                colorScheme='brand'
+                color='white'
+                onClick={handleIngredientUpload}
+              >
+                Añadir
+              </Button>
+            </Flex>
+          </FormControl>
         </VStack>
       </form>
     </aside>

@@ -16,6 +16,14 @@ export const useOrder = ({ uid }: useOrderProps) => {
   const [allOrders, setAllOrders] = useState<any>('')
   const address = useAppSelector(selectUserAddress)
 
+  const updateOrders = async () => {
+    const docRef = doc(db, 'users', uid)
+    const docValue = await getDoc(docRef)
+    const orders = await docValue.data()!.orders
+    if (!orders) return
+    setAllOrders(orders)
+  }
+
   const setOrder = async ({
     cartItems,
     total,
@@ -85,5 +93,5 @@ export const useOrder = ({ uid }: useOrderProps) => {
     getAllOrders()
   }, [allOrders, uid])
 
-  return { setOrder, isLoading, allOrders }
+  return { setOrder, isLoading, allOrders, updateOrders }
 }

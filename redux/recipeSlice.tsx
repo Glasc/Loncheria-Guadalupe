@@ -30,7 +30,7 @@ export const addNewRecipe = createAsyncThunk(
 
     await setDoc(doc(db, 'recipes', id), {
       ...payload,
-      id
+      id,
     })
   }
 )
@@ -75,6 +75,21 @@ export const addVariant = createAsyncThunk(
   }
 )
 
+export const addIngredient = createAsyncThunk(
+  'recipe/addIngredient',
+  async (payload: { id: string; ingredientName: string }, thunkAPI) => {
+    const docRef = doc(db, 'recipes', payload.id)
+
+    const res = await getDoc(docRef)
+
+    const data: [] = res.data()!.ingredients
+
+    await updateDoc(docRef, {
+      ingredients: [...data, payload.ingredientName],
+    })
+  }
+)
+
 export const modifyVariant = createAsyncThunk(
   'recipe/modifyVariant',
   async (payload: {
@@ -110,8 +125,6 @@ export const deleteVariant = createAsyncThunk(
     const docRef = doc(db, 'recipes', payload.id)
     const docSnap = await getDoc(docRef)
 
-    // const recipes = data.docs[0].data()
-
     const getPropertyIndex = docSnap
       .data()!
       .variants.findIndex((curr: any) => {
@@ -143,26 +156,18 @@ interface recipeState {
 }
 
 // Define the initial state using that type
-const initialState: recipeState = {
-  value: 0,
-}
+
 
 export const recipeSlice = createSlice({
   name: 'recipe',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState: {
-    value: 0,
+    menuAdminSelectionId: "",
   },
   reducers: {
-    increment: (state) => {
-      state.value += 1
-    },
-    decrement: (state) => {
-      state.value -= 1
-    },
     // Use the PayloadAction type to declare the contents of `action.payload`
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    setMenuAdminSelectionId: (state, action: PayloadAction<any>) => {
+      state.menuAdminSelectionId = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -198,10 +203,10 @@ export const recipeSlice = createSlice({
   },
 })
 
-export const { increment, decrement, incrementByAmount } =
-  recipeSlice.actions
+export const { setMenuAdminSelectionId } = recipeSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state.recipe.value
+export const selectMenuAdminSelectionId = (state: RootState) =>
+  state.recipe.menuAdminSelectionId
 
 export default recipeSlice.reducer

@@ -29,6 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
         <li>
           <Link href='#'>Ubicación</Link>
         </li>
+      
       </ul>
       {toggleHamburguerIcon && (
         <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
