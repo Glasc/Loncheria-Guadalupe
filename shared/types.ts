@@ -16,3 +16,18 @@ export interface CartItems {
   id: number
   price: number
 }
+
+export interface Orders {
+  address: string
+  date: any
+  id: number
+  orderList: {
+    id: number
+    price: number
+    quantity: number
+    sectionName: string
+    variantName: string
+  }[]
+  state: string
+  total: number
+}
