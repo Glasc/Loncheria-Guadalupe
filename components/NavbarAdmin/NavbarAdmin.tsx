@@ -50,7 +50,7 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
           <Link href='/cuenta'>Ventas</Link>
         </li>
         <li>
-          <Link href='/menu'>Control</Link>
+          <Link href='/admin/control'>Control</Link>
         </li>
         <li style={{ cursor: 'pointer' }}>
           <a onClick={handleLogOut}>Salir</a>
@@ -69,7 +69,7 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
               <Link href='/cuenta'>Ventas</Link>
             </li>
             <li>
-              <Link href='/menu'>Control</Link>
+              <Link href='/admin/control'>Control</Link>
             </li>
             <li style={{ cursor: 'pointer' }}>
               <a onClick={handleLogOut}>Salir</a>
