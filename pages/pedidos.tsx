@@ -48,7 +48,7 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
 
   useEffect(() => {
     if (!isAdmin) return
-    router.push('/admin/menuAdmin')
+    router.push('/admin/control')
   }, [isAdmin, router])
 
   useEffect(() => {

@@ -84,7 +84,7 @@ const Ordenar: NextPage<InferGetStaticPropsType<typeof getStaticProps>> =
 
     useEffect(() => {
       if (!isAdmin) return
-      router.push('/admin/menuAdmin')
+      router.push('/admin/ventas')
     }, [isAdmin, router])
 
     useEffect(() => {

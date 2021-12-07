@@ -22,8 +22,8 @@ import { GetStaticProps } from 'next'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import { selectUID } from '../redux/authSlice'
 import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
-import { useAdmin } from '../hooks/useAdmin';
-import { useRouter } from 'next/router';
+import { useAdmin } from '../hooks/useAdmin'
+import { useRouter } from 'next/router'
 import {
   addNewRecipe,
   deleteRecipe,
@@ -56,7 +56,7 @@ const Menu: NextPage = ({
 
   useEffect(() => {
     if (!isAdmin) return
-    router.push('/admin/menuAdmin')
+    router.push('/admin/ventas')
   }, [isAdmin, router])
 
   return (

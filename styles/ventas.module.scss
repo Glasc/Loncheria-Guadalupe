@@ -1,8 +1,13 @@
+.selectionContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2em 0;
+}
+
 .cardContainer {
   color: white;
-  margin-top: 4em;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(365px, 1fr));
   gap: 1.75em;
 }
 
@@ -23,7 +28,6 @@
   font-weight: 450;
   font-size: 3rem;
   color: #e2d8d7;
-  
 }
 .card h3 {
   font-size: 1.2rem;

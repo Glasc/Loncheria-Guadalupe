@@ -13,7 +13,7 @@ import {
 import db from '../../firebase/firebaseConfig'
 import styles from './control.module.scss'
 import { Button } from '@chakra-ui/button'
-import { CheckCircleIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon, EmailIcon, TimeIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react'
 import useUsers from '../../hooks/useUsers'
 import { Loading } from '../../components/UI/Loading'
@@ -25,18 +25,23 @@ import deleteById from '../../utils/deleteById'
 import sortByDate from '../../utils/sortByDate'
 import { ControlBtn } from '../../components/UI/buttons/controlBtn'
 import Swal from 'sweetalert2'
+import { format, compareAsc } from 'date-fns'
+import { setDoc } from '@firebase/firestore'
+import { useAdmin } from '../../hooks/useAdmin'
 
 interface ControlProps {}
 interface OrderProps {}
 
 const Control: NextPage = ({}) => {
   const { orders, isLoading, updateOrders } = useUsers()
+  const uid: string = useAppSelector(selectUID)
+  const { isAdmin } = useAdmin({ uid })
   useAuth()
 
   useEffect(() => {
     const interval = setInterval(() => {
       updateOrders(false)
-    }, 12000)
+    }, 20000)
     return () => clearInterval(interval)
   }, [updateOrders])
 
@@ -51,12 +56,33 @@ const Control: NextPage = ({}) => {
     })
 
     const totalSales = [...newArr].reduce((acc, curr) => {
-      return acc += curr.total
+      return (acc += curr.total)
     }, 0)
-    
+
     const totalOrders = newArr.length
 
-    console.table(newArr)
+    // total new users
+    const date = format(new Date(), 'ddMMyyyy').toString()
+    const salesRef = doc(db, 'usersRegisteredCount', 'count')
+    const prevResponse = await getDoc(salesRef)
+    const prevData = prevResponse.data()
+    const prevUsersRegistered = prevData!.usersRegistered
+    // total users overall
+    const usersRef = collection(db, 'users')
+    const usersDocs = await getDocs(usersRef)
+
+    await setDoc(doc(db, 'sales', date), {
+      totalSales,
+      totalOrders,
+      usersRegistered: prevUsersRegistered,
+      totalUsersRegistered: usersDocs.docs.length,
+    })
+
+    await updateDoc(salesRef, {
+      usersRegistered: 0,
+    })
+
+    // console.table(newArr)
   }
 
   if (isLoading)
@@ -193,11 +219,21 @@ const Order: React.FC<Orders> = ({
     }
   }
 
+  const IconState = (iconState: State) => {
+    if (iconState === 'Espera de confirmar') {
+      return <TimeIcon w={10} h={10} />
+    }
+    if (iconState === 'Confirmado') {
+      return <EmailIcon w={10} h={10} />
+    }
+    if (iconState === 'Entregado') {
+      return <CheckCircleIcon w={10} h={10} />
+    }
+  }
+
   return (
     <div key={id} className={styles.card}>
-      <div className={styles.logo}>
-        <CheckCircleIcon w={10} h={10} />
-      </div>
+      <div className={styles.logo}>{IconState(state)}</div>
       <div className={styles.cardAside}>
         <div className={styles.description}>
           <h2>{state}</h2>

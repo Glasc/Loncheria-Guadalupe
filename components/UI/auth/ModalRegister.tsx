@@ -18,8 +18,15 @@ import { Grid, VStack } from '@chakra-ui/layout'
 import { useDisclosure } from '@chakra-ui/hooks'
 import { Button } from '@chakra-ui/button'
 import { createUserWithEmailAndPassword, getAuth } from '@firebase/auth'
-import { doc, getDoc, updateDoc, setDoc, collection } from '@firebase/firestore'
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  collection,
+} from '@firebase/firestore'
 import db from '../../../firebase/firebaseConfig'
+import { format } from 'date-fns'
 
 interface ModalRegisterProps {}
 
@@ -50,7 +57,7 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
       carrito: [],
       orders: {
         byId: {},
-        allIds: []
+        allIds: [],
       },
       pedidos: [],
       userInfo: {
@@ -60,6 +67,26 @@ export const ModalRegister: React.FC<ModalRegisterProps> = ({}) => {
           telephoneNumber: formValues.phoneNumber,
         },
       },
+    })
+
+    // const date = format(new Date(), 'ddMMyyyy').toString()
+    // const salesRef = doc(db, 'sales', date)
+    // const prevResponse = await getDoc(salesRef)
+    // const prevData = prevResponse.data()
+    // const prevUsersRegistered = prevData!.prevUsersRegistered
+
+    // await updateDoc(salesRef, {
+    //   ...prevData,
+    //   prevUsersRegistered: prevUsersRegistered + 1,
+    // })
+
+    const salesRef = doc(db, 'usersRegisteredCount', 'count')
+    const prevResponse = await getDoc(salesRef)
+    const prevData = prevResponse.data()
+    const prevUsersRegistered = prevData!.usersRegistered
+
+    await updateDoc(salesRef, {
+      usersRegistered: prevUsersRegistered + 1,
     })
   }
 

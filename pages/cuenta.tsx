@@ -16,12 +16,15 @@ import { auth } from '../firebase/firebaseConfig'
 import { Spinner } from '@chakra-ui/spinner'
 import { Box } from '@chakra-ui/layout'
 import { Loading } from '../components/UI/Loading'
+import { NavbarAdmin } from '../components/NavbarAdmin/NavbarAdmin'
+import { useAdmin } from '../hooks/useAdmin'
 
 interface CuentaProps {}
 
 const Cuenta: NextPage<CuentaProps> = ({}) => {
   const dispatch = useAppDispatch()
   const uid: string = useAppSelector(selectUID) || ''
+  const { isAdmin } = useAdmin({ uid })
   const { saveProfile, isLoading, getInitialInputs, initialInputs }: any =
     useProfile({ uid })
 
@@ -58,14 +61,14 @@ const Cuenta: NextPage<CuentaProps> = ({}) => {
 
     saveProfile({ name, telephoneNumber, address })
   }
-  
+
   if (isLoading) return <Loading />
 
   return (
     <Layout>
-      <NavbarAuth />
+      {isAdmin ? <NavbarAdmin /> : <NavbarAuth />}
       <form className={styles.form} onSubmit={handleSubmit}>
-        <div style={{borderRadius: "15px"}}>
+        <div style={{ borderRadius: '15px' }}>
           <Image
             src='/assets/profile_example2.png'
             alt='Cuenta'
