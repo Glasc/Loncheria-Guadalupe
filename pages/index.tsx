@@ -105,7 +105,7 @@ const CardsContent = () => {
           <div className={styles.footerCardDescription}>
             <h3>Sándwich</h3>
             <p>
-              sándwiches de jamón y queso para una meriendita de amigos o
+              Sándwiches de jamón y queso para una meriendita de amigos o
               una desayuno ligera.{' '}
             </p>
           </div>
