@@ -9,8 +9,6 @@
   background-color: $secondary-color;
 }
 
-
-
 .hamburgerIcon {
   position: absolute;
   right: 0;
@@ -33,7 +31,7 @@
     font-weight: bold;
     text-align: center;
     font-size: 2.8125rem;
-    line-height: 3rem;;
+    line-height: 3rem;
     color: whitesmoke;
   }
   & p {
@@ -75,10 +73,11 @@
 .footerCard {
   border-radius: 11px;
   display: grid;
-  grid-template-rows: 1fr auto;
-  gap: 2em;
+  grid-template-rows: auto 1fr;
+  gap: 0.8em;
   padding: 1em;
   background-color: $quaternary-color;
+  align-content: flex-start;
   cursor: pointer;
 
   & .footerCardImage * {
@@ -89,7 +88,7 @@
     color: $primary-color;
     font-weight: bold;
     font-size: 1.125rem;
-  } 
+  }
   & h4 {
     color: whitesmoke;
   }

@@ -38,19 +38,41 @@ export const NavbarAuth: React.FC<NavbarAuthProps> = ({}) => {
   return (
     <nav className={styles.navbar}>
       <h2 className={styles.navbarLogo}>
-        <Link href='/pedidos'>Lorem Ipsum</Link>
+        <Link href='/pedidos'>Lonchería Glupe</Link>
       </h2>
       <ul className={styles.navbarList}>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/ordenar' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/ordenar'>Ordenar</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/pedidos' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/pedidos'>Pedidos</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/cuenta' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/cuenta'>Cuenta</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${router.pathname == '/menu' ? '#e94a30' : 'inherit'}`,
+          }}
+        >
           <Link href='/menu'>Menu</Link>
         </li>
         <li style={{ cursor: 'pointer' }}>

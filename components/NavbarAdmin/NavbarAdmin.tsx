@@ -37,22 +37,50 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
   return (
     <nav className={styles.navbar}>
       <h2 className={styles.navbarLogo}>
-        <Link href='/pedidos'>Lorem Ipsum</Link>
+        <Link href='/pedidos'>Lonchería Glupe</Link>
       </h2>
       <ul className={styles.navbarList}>
-        <li>
-          <Link href='/ordenar'>Menú</Link>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/admin/menuAdmin' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
+          <Link href='/admin/menuAdmin'>Menú</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/cuenta' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/cuenta'>Cuenta</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/admin/ventas' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/admin/ventas'>Ventas</Link>
         </li>
-        <li>
+        <li
+          style={{
+            color: `${
+              router.pathname == '/admin/control' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
           <Link href='/admin/control'>Control</Link>
         </li>
-        <li style={{ cursor: 'pointer' }}>
+        <li
+          style={{
+            cursor: 'pointer',
+          }}
+        >
           <a onClick={handleLogOut}>Salir</a>
         </li>
       </ul>
@@ -60,13 +88,13 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
         <animated.h1 style={ps} className={styles.navbarListMobileCustom}>
           <ul className={styles.navbarListMobile}>
             <li>
-              <Link href='/ordenar'>Menú</Link>
+              <Link href='/admin/menuAdmin'>Menú</Link>
             </li>
             <li>
-              <Link href='/pedidos'>Cuenta</Link>
+              <Link href='/cuenta'>Cuenta</Link>
             </li>
             <li>
-              <Link href='/cuenta'>Ventas</Link>
+              <Link href='/admin/ventas'>Ventas</Link>
             </li>
             <li>
               <Link href='/admin/control'>Control</Link>

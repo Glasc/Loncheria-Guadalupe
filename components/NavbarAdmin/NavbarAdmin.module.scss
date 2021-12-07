@@ -38,12 +38,11 @@
   padding-right: 0;
   gap: 1.5em;
   & li {
-  
   }
+}
 
-  & li:first-child {
-    color: $primary-color;
-  }
+.active {
+  color: #e94a30;
 }
 
 @media (max-width: 700px) {

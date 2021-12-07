@@ -35,7 +35,6 @@ const Home: NextPage = (props) => {
     })
   }, [dispatch, router])
 
-
   if (showMain) {
     return (
       <Layout>
@@ -58,11 +57,11 @@ const Hero = () => {
     <section className={styles.hero}>
       <aside className={styles.heroDescription}>
         <h1>
-          Lorem ipsum dolor sit{' '}
-          <span style={{ color: '#ED3C1F' }}>amet, consectetur</span>{' '}
-          adipiscing elit ut
+          Una tradición en{' '}
+          <span style={{ color: '#ED3C1F' }}>tortas y sándwich</span> a la
+          plancha
         </h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut</p>
+        <p>Abrimos de Lunes a Viernes. Servicio a Domicilio Col. Centro</p>
         <div className={styles.heroButtonWrapper}>
           <ModalLogin />
           <ModalRegister />
@@ -96,49 +95,55 @@ const CardsContent = () => {
         <article className={styles.footerCard}>
           <div className={styles.footerCardImage}>
             <Image
-              src='/assets/torta2.jpg'
-              alt='Tortita'
-              width={430}
-              height={250}
-              layout='intrinsic'
-            />
-          </div>
-          <div className={styles.footerCardDescription}>
-            <h3>Lorem Ipsum Dolor</h3>
-            <h4>Lorem ipsum dolor sit amet.</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-          </div>
-        </article>
-        <article className={styles.footerCard}>
-          <div className={styles.footerCardImage}>
-            <Image
-              src='/assets/torta2.jpg'
-              alt='Tortita'
+              src='/assets/sandwich_plancha.webp'
+              alt='Sándwich'
               width={430}
               height={260}
               layout='intrinsic'
             />
           </div>
           <div className={styles.footerCardDescription}>
-            <h3>Lorem Ipsum Dolor</h3>
-            <h4>Lorem ipsum dolor sit amet.</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <h3>Sándwich</h3>
+            <p>
+              sándwiches de jamón y queso para una meriendita de amigos o
+              una desayuno ligera.{' '}
+            </p>
           </div>
         </article>
         <article className={styles.footerCard}>
           <div className={styles.footerCardImage}>
             <Image
-              src='/assets/torta2.jpg'
-              alt='Tortita'
+              src='/assets/torta_plancha.jpg'
+              alt='Torta'
               width={430}
-              height={250}
+              height={260}
               layout='intrinsic'
             />
           </div>
           <div className={styles.footerCardDescription}>
-            <h3>Lorem Ipsum Dolor</h3>
-            <h4>Lorem ipsum dolor sit amet.</h4>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+            <h3>Torta</h3>
+            <p>
+              Tortas con cualquier ingrediente tradicional calentadas a la
+              plancha
+            </p>
+          </div>
+        </article>
+        <article className={styles.footerCard}>
+          <div className={styles.footerCardImage}>
+            <Image
+              src='/assets/sincronizada.jpg'
+              alt='Sincronizada'
+              width={430}
+              height={260}
+              layout='intrinsic'
+            />
+          </div>
+          <div className={styles.footerCardDescription}>
+            <h3>Sincronizada</h3>
+            <p>
+              Antojito formado por dos tortillas entre las que se pone
+              jamón y queso.
+            </p>
           </div>
         </article>
       </section>

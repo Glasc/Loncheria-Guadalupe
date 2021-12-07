@@ -8,7 +8,7 @@ import styles from '../styles/Pedidos.module.scss'
 import { Layout } from '../components/Layout'
 import { NavbarAuth } from '../components/NavbarAuth/NavbarAuth'
 import { Button } from '@chakra-ui/button'
-import { CheckCircleIcon } from '@chakra-ui/icons'
+import { CheckCircleIcon, TimeIcon, EmailIcon } from '@chakra-ui/icons'
 import { getAuth } from 'firebase/auth'
 import {
   setDoc,
@@ -34,6 +34,7 @@ import { useOrder } from '../hooks/useOrder'
 import { useCart } from '../hooks/useCart'
 import { useAdmin } from '../hooks/useAdmin'
 import { useRouter } from 'next/router'
+import { State } from '../shared/types'
 
 interface PedidosProps {}
 
@@ -94,6 +95,18 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
     updateOrders()
   }
 
+  const IconState = (iconState: State) => {
+    if (iconState === 'Espera de confirmar') {
+      return <TimeIcon w={10} h={10} />
+    }
+    if (iconState === 'Confirmado') {
+      return <EmailIcon w={10} h={10} />
+    }
+    if (iconState === 'Entregado') {
+      return <CheckCircleIcon w={10} h={10} />
+    }
+  }
+
   return (
     <Layout>
       <NavbarAuth />
@@ -109,9 +122,7 @@ const Pedidos: NextPage<PedidosProps> = ({}) => {
               byId[currId]
             return (
               <div key={currId} className={styles.card}>
-                <div className={styles.logo}>
-                  <CheckCircleIcon w={10} h={10} />
-                </div>
+                <div className={styles.logo}>{IconState(state)}</div>
                 <div className={styles.cardAside}>
                   <div className={styles.description}>
                     <h2>{state}</h2>

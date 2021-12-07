@@ -3,10 +3,12 @@ import styles from './Navbar.module.scss'
 import Link from 'next/link'
 import { animated, useSpring } from 'react-spring'
 import { HamburgerIcon } from '@chakra-ui/icons'
+import { useRouter } from 'next/router'
 
 interface NavbarProps {}
 
 export const Navbar: React.FC<NavbarProps> = ({}) => {
+  const router = useRouter()
   const [toggleHamburguerIcon, setToggleHamburguerIcon] =
     useState<boolean>(false)
 
@@ -20,14 +22,15 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
   return (
     <nav className={styles.navbar}>
       <h2 className={styles.navbarLogo}>
-        <Link href='/'>Lorem Ipsum</Link>
+        <Link href='/'>Lonchería Glupe</Link>
       </h2>
       <ul className={styles.navbarList}>
-        <li>
+        <li
+          style={{
+            color: `${router.pathname == '/menu' ? '#e94a30' : 'inherit'}`,
+          }}
+        >
           <Link href='/menu'>Menu</Link>
-        </li>
-        <li>
-          <Link href='#'>Ubicación</Link>
         </li>
       </ul>
       {toggleHamburguerIcon && (
@@ -35,9 +38,6 @@ export const Navbar: React.FC<NavbarProps> = ({}) => {
           <ul className={styles.navbarListMobile}>
             <li>
               <Link href='/menu'>Menu</Link>
-            </li>
-            <li>
-              <Link href='#'>Ubicación</Link>
             </li>
           </ul>
         </animated.h1>
