@@ -1,15 +1,21 @@
 @import '../../styles/variables.scss';
 
+.endButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin: 2em 0;
+}
+
 .cardsContent {
   display: grid;
-  gap: 1em;
-  margin-top: 6em;
+  gap: 2em;
 }
 
 .card {
   text-align: center;
   background-color: $quaternary-color;
   padding: 1.5em;
+  border-left: 7px solid #ce5b49;
 }
 
 .logo {
@@ -54,11 +60,12 @@
     text-align: initial;
     display: grid;
     grid-template-columns: auto 1fr;
+    align-content: center;
     gap: 2em;
   }
   .cardsContent {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
   .logo {

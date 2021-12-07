@@ -47,7 +47,7 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
           <Link href='/pedidos'>Cuenta</Link>
         </li>
         <li>
-          <Link href='/cuenta'>Ventas</Link>
+          <Link href='/admin/ventas'>Ventas</Link>
         </li>
         <li>
           <Link href='/admin/control'>Control</Link>

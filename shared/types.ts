@@ -28,6 +28,11 @@ export interface Orders {
     sectionName: string
     variantName: string
   }[]
-  state: string
+  state: State
   total: number
+  userId: string
+  dateFns: any
+  updateOrders?: any
 }
+
+export type State = "Espera de confirmar" | "Confirmado" | "Entregado"

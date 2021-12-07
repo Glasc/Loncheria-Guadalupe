@@ -44,6 +44,7 @@ export const useOrder = ({ uid }: useOrderProps) => {
         date: formatRelative(subDays(new Date(), 0), new Date(), {
           locale: es,
         }),
+        dateFns: new Date(),
         id,
         total,
         state: 'Espera de confirmar',

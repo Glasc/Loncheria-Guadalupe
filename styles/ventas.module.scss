@@ -1,0 +1,34 @@
+.cardContainer {
+  color: white;
+  margin-top: 4em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.75em;
+}
+
+.card {
+  background-color: #2a2524;
+  padding: 2.5em;
+  border-radius: 14px;
+  text-align: center;
+  & > * + * {
+    margin-top: 0.3em;
+  }
+}
+
+.cardImage {
+}
+
+.card h2 {
+  font-weight: 450;
+  font-size: 3rem;
+  color: #e2d8d7;
+  
+}
+.card h3 {
+  font-size: 1.2rem;
+}
+
+.asd {
+  color: #dd462e;
+}
