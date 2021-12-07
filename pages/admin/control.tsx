@@ -33,7 +33,7 @@ interface ControlProps {}
 interface OrderProps {}
 
 const Control: NextPage = ({}) => {
-  const { orders, isLoading, updateOrders } = useUsers()
+  const { orders, isLoading, updateOrders, eraseOrders } = useUsers()
   const uid: string = useAppSelector(selectUID)
   const { isAdmin } = useAdmin({ uid })
   useAuth()
@@ -41,7 +41,7 @@ const Control: NextPage = ({}) => {
   useEffect(() => {
     const interval = setInterval(() => {
       updateOrders(false)
-    }, 7000)
+    }, 3500)
     return () => clearInterval(interval)
   }, [updateOrders])
 
@@ -81,6 +81,8 @@ const Control: NextPage = ({}) => {
     await updateDoc(salesRef, {
       usersRegistered: 0,
     })
+
+    eraseOrders()
 
     // console.table(newArr)
   }

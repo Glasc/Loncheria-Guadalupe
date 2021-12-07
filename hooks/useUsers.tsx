@@ -1,4 +1,10 @@
-import { collection, doc, getDocs } from '@firebase/firestore'
+import {
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+  getDoc,
+} from '@firebase/firestore'
 import { useEffect, useState } from 'react'
 import db from '../firebase/firebaseConfig'
 import { Orders } from '../shared/types'
@@ -13,6 +19,25 @@ export const useUsers = () => {
 
   const updateOrders = (shouldLoad = true) => getClientOrders(shouldLoad)
 
+  const eraseOrder = async (id: string) => {
+    const docRef = doc(db, 'users', id)
+    const docValue = await getDoc(docRef)
+    const docPrevData = await docValue.data()!.orders
+    await updateDoc(docRef, {
+      [`orders.allIds`]: [],
+    })
+    await updateDoc(docRef, {
+      [`orders.byId`]: {},
+    })
+  }
+
+  const eraseOrders = async () => {
+    const collectionRef = collection(db, 'users')
+    const collectionDocs = await getDocs(collectionRef)
+    const userOrders: any[] = collectionDocs.docs.map((currUser): any => {
+      eraseOrder(currUser.id)
+    })
+  }
 
   const getClientOrders = async (shouldLoad: boolean) => {
     try {
@@ -45,7 +70,7 @@ export const useUsers = () => {
     }
   }
 
-  return { orders, isLoading, updateOrders }
+  return { orders, isLoading, updateOrders, eraseOrders }
 }
 
 export default useUsers
