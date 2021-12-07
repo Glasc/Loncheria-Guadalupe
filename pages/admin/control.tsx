@@ -41,7 +41,7 @@ const Control: NextPage = ({}) => {
   useEffect(() => {
     const interval = setInterval(() => {
       updateOrders(false)
-    }, 20000)
+    }, 7000)
     return () => clearInterval(interval)
   }, [updateOrders])
 
