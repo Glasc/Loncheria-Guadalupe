@@ -43,6 +43,8 @@ const LoginForm: React.FC<any> = ({ setToggleRecoverPassword }) => {
         <FormControl id='email' autoComplete='off'>
           <FormLabel>Correo</FormLabel>
           <Input
+            border=""
+            backgroundColor="#473f3e"
             type='email'
             ref={firstInput}
             value={email}
@@ -52,11 +54,14 @@ const LoginForm: React.FC<any> = ({ setToggleRecoverPassword }) => {
         <FormControl id='password'>
           <FormLabel>Contraseña</FormLabel>
           <Input
+            backgroundColor="#473f3e"
+            border="none"
             type='password'
             value={password}
             onChange={handlePassword}
           />
           <FormHelperText
+            color="whitesmoke"
             cursor='pointer'
             textDecoration='underline'
             onClick={() => setToggleRecoverPassword((prev: any) => !prev)}
@@ -74,15 +79,7 @@ const LoginForm: React.FC<any> = ({ setToggleRecoverPassword }) => {
           <Button colorScheme='teal' onClick={signIn}>
             Iniciar Sesión
           </Button>
-          <Button
-            color='white'
-            variant='solid'
-            size='md'
-            onClick={onOpen}
-            width='100%'
-          >
-            Continuar con Google
-          </Button>
+        
         </Grid>
       </VStack>
     </form>
