@@ -26,7 +26,6 @@ function ModalLogin() {
     if (isOpen) return
     setToggleRecoverPassword(false)
   }, [isOpen])
-  
 
   return (
     <div style={{ width: '100%', color: 'black' }}>

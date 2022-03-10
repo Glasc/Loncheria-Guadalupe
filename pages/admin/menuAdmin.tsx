@@ -44,13 +44,26 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
     useState<boolean>(false)
 
   const [recipes, setRecipes] = useState<any>('')
+  console.log(recipes)
 
   useEffect(() => {
     const getRecipes = async () => {
       if (!currentSectionId) return
       const docRef = doc(db, 'recipes', currentSectionId)
       const docValue = await getDoc(docRef)
-      const docData = await docValue.data()
+      const docData = docValue.data()
+      setRecipes(docData)
+    }
+
+    getRecipes()
+  }, [currentSectionId])
+
+  useEffect(() => {
+    const getRecipes = async () => {
+      if (!currentSectionId) return
+      const docRef = doc(db, 'recipes', currentSectionId)
+      const docValue = await getDoc(docRef)
+      const docData = docValue.data()
       setRecipes(docData)
     }
 
@@ -58,9 +71,10 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
       if (!firstRecipeRequest) {
         getRecipes()
         setFirstRecipeRequest(true)
-        console.log(recipes)
       }
     }
+
+
   }, [currentSectionId, recipes, firstRecipeRequest])
 
   return (
