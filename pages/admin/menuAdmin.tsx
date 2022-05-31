@@ -73,8 +73,6 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
         setFirstRecipeRequest(true)
       }
     }
-
-
   }, [currentSectionId, recipes, firstRecipeRequest])
 
   return (

@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+  margin-top: 3em;
+  padding: 1em;
+  color: white;
+  border-radius: 7px;
+  & * {
+    background-color: white;
+  }
+}

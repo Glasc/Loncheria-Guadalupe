@@ -78,6 +78,15 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
         </li>
         <li
           style={{
+            color: `${
+              router.pathname == '/admin/dashboard' ? '#e94a30' : 'inherit'
+            }`,
+          }}
+        >
+          <Link href='/admin/dashboard'>Dashboard</Link>
+        </li>
+        <li
+          style={{
             cursor: 'pointer',
           }}
         >
@@ -98,6 +107,9 @@ export const NavbarAdmin: React.FC<NavbarAdminProps> = ({}) => {
             </li>
             <li>
               <Link href='/admin/control'>Control</Link>
+            </li>
+            <li>
+              <Link href='/admin/dashboard'>Dashboard</Link>
             </li>
             <li style={{ cursor: 'pointer' }}>
               <a onClick={handleLogOut}>Salir</a>
