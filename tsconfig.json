@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase/firebaseConfig.js", "utils/deleteById.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase/firebaseConfig.js", "utils/deleteById.js", "helpers/loopOrders.js"],
   "exclude": ["node_modules"]
 }

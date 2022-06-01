@@ -7,11 +7,7 @@ import { Button } from '@chakra-ui/button'
 import { CheckCircleIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons'
 import { Navbar } from '../../components/Navbar/Navbar'
 import { Grid, VStack, Text, Flex } from '@chakra-ui/layout'
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-} from '@chakra-ui/form-control'
+import { FormControl, FormHelperText, FormLabel } from '@chakra-ui/form-control'
 import { Input } from '@chakra-ui/input'
 import { Select } from '@chakra-ui/select'
 import { LightMode } from '@chakra-ui/color-mode'
@@ -40,11 +36,9 @@ interface MenuPanelProps {}
 const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
   const currentSectionId: string =
     useAppSelector(selectMenuAdminSelectionId) || ''
-  const [firstRecipeRequest, setFirstRecipeRequest] =
-    useState<boolean>(false)
+  const [firstRecipeRequest, setFirstRecipeRequest] = useState<boolean>(false)
 
-  const [recipes, setRecipes] = useState<any>('')
-  console.log(recipes)
+  const [recipes, setRecipes] = useState<any>([])
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -89,7 +83,7 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
                   id={recipes.name}
                   key={recipes.name}
                 />
-                {recipes.variants.map((currVariant: any, idx: any) => {
+                {recipes?.variants?.map((currVariant: any, idx: any) => {
                   return (
                     <Product
                       productName={currVariant.name}
@@ -104,7 +98,7 @@ const MenuAdmin: NextPage<MenuAdminProps> = ({}) => {
             <Product productName='Panela' price={19} /> */}
           </div>
         </div>
-        <MenuPanel />
+        <MenuPanel currentSectionId={currentSectionId} />
       </main>
     </Layout>
   )
@@ -174,7 +168,7 @@ const Product = ({ price, productName }: any) => {
   )
 }
 
-const MenuPanel = () => {
+const MenuPanel = ({ currentSectionId }: any) => {
   const dispatch = useAppDispatch()
 
   const {
@@ -220,6 +214,7 @@ const MenuPanel = () => {
         price: Number(price),
       })
     )
+
     setDish('')
     setPrice('')
   }
@@ -255,18 +250,12 @@ const MenuPanel = () => {
               <Button
                 colorScheme='brand'
                 color='white'
-                onClick={handleUploadCategory}
-              >
+                onClick={handleUploadCategory}>
                 Añadir
               </Button>
             </Flex>
           </FormControl>
-          <Text
-            fontWeight='semibold'
-            fontSize='2xl'
-            alignSelf='start'
-            mb={2}
-          >
+          <Text fontWeight='semibold' fontSize='2xl' alignSelf='start' mb={2}>
             Añadir platillo
           </Text>
           <LightMode>
@@ -281,10 +270,9 @@ const MenuPanel = () => {
               onClick={(e: any) => {
                 setDropDownId(e.target.value)
                 dispatch(setMenuAdminSelectionId(''))
-              }}
-            >
+              }}>
               {recipes &&
-                recipes.map(
+                recipes?.map(
                   (
                     currRecipe: { sectionName: string; id: string },
                     idx: number
@@ -324,18 +312,20 @@ const MenuPanel = () => {
             templateColumns={'repeat(auto-fit, minmax(175px, 1fr))'}
             gap='1em'
             alignItems='center'
-            w='100%'
-          >
+            w='100%'>
             <Button
-              onClick={handleDishUpload}
+              onClick={(e: any) => {
+                handleDishUpload()
+                setDropDownId(e.target.value)
+                dispatch(setMenuAdminSelectionId(''))
+              }}
               colorScheme='brand'
-              color='white'
-            >
+              color='white'>
               Añadir
             </Button>
           </Grid>
           <Text fontWeight='semibold' fontSize='2xl' alignSelf='start'>
-            Añadir ingrediente
+            Añadir ingredientes
           </Text>
           <FormControl id='email' autoComplete='off' isRequired>
             <FormLabel fontWeight='normal'>Ingrediente</FormLabel>
@@ -350,8 +340,7 @@ const MenuPanel = () => {
               <Button
                 colorScheme='brand'
                 color='white'
-                onClick={handleIngredientUpload}
-              >
+                onClick={handleIngredientUpload}>
                 Añadir
               </Button>
             </Flex>

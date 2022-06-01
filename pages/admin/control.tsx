@@ -55,6 +55,8 @@ const Control: NextPage = ({}) => {
       return false
     })
 
+    console.log(sortByDate(orders))
+
     const totalSales = [...newArr].reduce((acc, curr) => {
       return (acc += curr.total)
     }, 0)
@@ -76,6 +78,7 @@ const Control: NextPage = ({}) => {
       totalOrders,
       usersRegistered: prevUsersRegistered,
       totalUsersRegistered: usersDocs.docs.length,
+      orderList: sortByDate(orders),
     })
 
     await updateDoc(salesRef, {

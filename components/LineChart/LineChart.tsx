@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +9,7 @@ import {
   Legend,
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
+import styles from './LineChart.module.scss'
 import { faker } from '@faker-js/faker'
 
 ChartJS.register(
@@ -30,7 +30,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart',
+      text: 'Line Chart',
     },
   },
 }
@@ -38,14 +38,15 @@ export const options = {
 interface LineChartProps {
   labels: string[]
   dataSetLabel: number[]
+  title: string
 }
 
-export function LineChart({ labels, dataSetLabel }: LineChartProps) {
- const data = {
+export function LineChart({ labels, dataSetLabel, title }: LineChartProps) {
+  const data = {
     labels,
     datasets: [
       {
-        label: 'Ventas',
+        label: title,
         data: dataSetLabel,
         borderColor: '#E94A30',
         backgroundColor: '#E94A30',
@@ -53,5 +54,9 @@ export function LineChart({ labels, dataSetLabel }: LineChartProps) {
     ],
   }
 
-  return <Line options={options} data={data} />
+  return (
+    <div className={styles.container}>
+      <Line options={options} data={data} />
+    </div>
+  )
 }

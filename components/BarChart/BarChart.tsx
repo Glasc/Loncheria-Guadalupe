@@ -1,4 +1,4 @@
-import React from 'react'
+import styles from './BarChart.module.scss'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,7 +20,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Chart.js Bar Chart',
+      text: 'Bar Chart',
     },
   },
 }
@@ -28,14 +28,15 @@ export const options = {
 interface BarChartProps {
   labels: string[]
   dataSetLabel: number[]
+  title: string
 }
 
-export function BarChart({ labels, dataSetLabel }: BarChartProps) {
+export function BarChart({ labels, dataSetLabel, title }: BarChartProps) {
   const data = {
     labels,
     datasets: [
       {
-        label: 'Ventas',
+        label: title,
         data: dataSetLabel,
         borderColor: '#E94A30',
         backgroundColor: '#E94A30',
@@ -43,5 +44,9 @@ export function BarChart({ labels, dataSetLabel }: BarChartProps) {
     ],
   }
 
-  return <Bar options={options} data={data} />
+  return (
+    <div className={styles.container}>
+      <Bar options={options} data={data} />
+    </div>
+  )
 }
