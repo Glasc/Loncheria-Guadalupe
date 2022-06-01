@@ -56,20 +56,39 @@ const Dashboard: NextPage = () => {
 
   useEffect(() => {
     if (!sales) return
+
+    const salesData = sales.map((sale: any) => sale.totalSales)
+
     const labels = sales.map((sale: any) => stringToDate(sale.date))
     const labelsSorted = sortDates(labels)
 
-    const salesData = sales.map((sale: any) => sale.totalSales)
-    const totalOrdersData = sales.map((sale: any) => sale.totalOrders)
-    const usersRegistered = sales.map((sale: any) => sale.totalUsersRegistered)
+    const labelsAltGrouped = sales.map((sale: any) => ({
+      date: stringToDate(sale.date),
+      sale: sale.totalSales,
+    }))
+
+    const labelsAltGroupedSorted = sortDates(
+      labelsAltGrouped.map((currentLabelAlt: any) => {
+        return currentLabelAlt.date
+      })
+    )
+
+    const salesAltGrouped = labelsAltGrouped
+      .map((currentLabelAlt: any) => {
+        return currentLabelAlt.sale
+      })
+      .reverse()
+
+    const totalOrdersData = sales.map((sale: any) => sale.totalOrders).reverse()
+    const usersRegistered = sales.map((sale: any) => sale.usersRegistered).reverse()
     // orders
     const temp = sales.map((sale: any) => sale.orderList)
     const ordersByAmount = loopOrders(temp[temp.length - 1])
     const orderLabel = Object.keys(ordersByAmount)
     const orderData = Object.values(ordersByAmount)
 
-    setSalesLabel(labelsSorted)
-    setSalesData(salesData)
+    setSalesLabel(labelsAltGroupedSorted)
+    setSalesData(salesAltGrouped)
     setTotalOrdersData(totalOrdersData)
     totalSetUsersRegistered(usersRegistered)
     setOrdersLabel(orderLabel)
@@ -93,7 +112,8 @@ const Dashboard: NextPage = () => {
             color='white'
             border='none'
             backgroundColor='#5a5150'
-            onClick={handleSelectorClick}>
+            onClick={handleSelectorClick}
+          >
             <option value='barra'>Barra</option>
             <option value='línea'>Línea</option>
           </Select>
